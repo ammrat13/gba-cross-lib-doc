@@ -1,5 +1,5 @@
 *INSTALL_DIR:
-/home/ammar/AGBToolchain
+%:getenv(PREFIX /)
 
 *INCLUDE_DIR:
 %(INSTALL_DIR)/include
