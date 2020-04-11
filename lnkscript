@@ -1,0 +1,75 @@
+/**
+    lnkscript
+    By: Ammar Ratnani
+
+    A simple linker script for GBA games. Note that it doesn't handle 
+    constructors in C or C++.
+*/
+
+ENTRY(_start)
+TARGET(elf32-littlearm)
+
+
+/* Taken directly from GBATek */
+MEMORY {
+    ewram (rwx) : ORIGIN = 0x02000000, LENGTH =   0x40000
+    iwram (rwx) : ORIGIN = 0x03000000, LENGTH =    0x8000
+    crom  (rx)  : ORIGIN = 0x08000000, LENGTH = 0x6000000
+}
+
+
+SECTIONS {
+
+    /* Write the .text section - it stays in ROM */
+    .text : ALIGN(0x4) {
+        /* Make sure crt0 goes first because it has cartridge header */
+        *crt0.o(.text)
+
+        /* Then have all the other files' .text sections and their preambles */
+        *(.text.startup)
+        *(.text)
+
+        /* Also auto-generated ARM sections */
+        *(.glue_7)
+        *(.glue_7t)
+        *(.v4_bx)
+        *(.vfp11_veneer)
+    } >crom
+
+
+    /* Similarly do .rodata and keep it where it is */
+    .rodata : ALIGN(0x4) { *(.rodata) } >crom
+
+
+    /* Not sure why PLT and GOT are being generated, but we should keep them */
+    .iplt     : ALIGN(0x4) { *(.iplt)     } >crom
+    .rel.iplt : ALIGN(0x4) { *(.rel.iplt) } >crom
+    .igot.plt : ALIGN(0x4) { *(.igot.plt) } >crom
+
+
+    /* We will copy .data into IWRAM */
+    /* Same for .bss, though we don't have to include it in the image */
+    .data : ALIGN(0x4){ *(.data) } >iwram AT>crom
+    .bss (NOLOAD) : ALIGN(0x4) {
+        *(.bss)
+        *(COMMON) /* Take the recommendation and put it here */
+    } AT>crom
+
+
+    /* Define symbols to pass data to crt0 */
+    __data_vma = ADDR(.data);
+    __data_lma = LOADADDR(.data);
+    __data_len = SIZEOF(.data);
+
+    __bss_lma = LOADADDR(.bss);
+    __bss_len = SIZEOF(.bss);
+
+
+    /* We don't care about these sections */
+    /DISCARD/ : {
+        *(.comment)
+        *(.ARM.attributes)
+        *(.debug_*)
+    }
+
+}

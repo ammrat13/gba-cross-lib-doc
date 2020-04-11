@@ -1,0 +1,30 @@
+*INSTALL_DIR:
+/home/ammar/AGBToolchain
+
+*INCLUDE_DIR:
+%(INSTALL_DIR)/include
+
+*LIB_DIR:
+%(INSTALL_DIR)/lib
+
+*as:
+-mthumb-interwork
+
+*cc1:
+-I%(INCLUDE_DIR) -mthumb-interwork -ffreestanding
+
+*link:
+-L%(INSTALL_DIR) -L%(LIB_DIR) -Tlnkscript --orphan-handling=error
+
+*libgcc:
+-lgcc
+
+*lib:
+-lgccmem
+
+*startfile:
+-l:crt0.o
+
+*endfile:
+
+
