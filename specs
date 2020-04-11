@@ -1,5 +1,5 @@
 *INSTALL_DIR:
-%:getenv(PREFIX /)
+/home/ammar/AGBToolchain
 
 *INCLUDE_DIR:
 %(INSTALL_DIR)/include
@@ -11,7 +11,7 @@
 -mthumb-interwork
 
 *cc1:
--I%(INCLUDE_DIR) -mthumb-interwork -ffreestanding
+-I%(INCLUDE_DIR) -mcpu=arm7tdmi -mthumb-interwork -ffreestanding
 
 *link:
 -L%(INSTALL_DIR) -L%(LIB_DIR) -Tlnkscript --orphan-handling=error
