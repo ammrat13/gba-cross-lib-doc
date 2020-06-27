@@ -2,10 +2,10 @@
     crt0.s
     By: Ammar Ratnani
 
-    Basic starup routine for GBA games. Is responsible for the cartridge header, 
-    copying data from ROM into RAM, setting up the stack, then calling `main`. 
-    Note that there is no operating system to pass parameters or handle failure, 
-    so the declatation should be `void main(void)`. Also note that this files 
+    Basic starup routine for GBA games. Is responsible for the cartridge header,
+    copying data from ROM into RAM, setting up the stack, then calling `main`.
+    Note that there is no operating system to pass parameters or handle failure,
+    so the declatation should be `void main(void)`. Also note that this file
     does not handle interrupts or set up the IRQ stack.
 */
 

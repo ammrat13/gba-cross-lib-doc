@@ -2,11 +2,11 @@
     libgccmem.c
     By: Ammar Ratnani
 
-    Required to run LibGCC. Even in freestanding mode, the compiler is allowed 
-    to assume that `memcmp`, `memset`, `memcpy`, and `memmove` exist, so we 
+    Required to run LibGCC. Even in freestanding mode, the compiler is allowed
+    to assume that `memcmp`, `memset`, `memcpy`, and `memmove` exist, so we
     must provide definitions. See their appropriate `man` pages for more detail.
 
-    Note that all the functions are in THUMB mode for efficiency. Make sure to 
+    Note that all the functions are in THUMB mode for efficiency. Make sure to
     compile with `-mthumb-interwork` so calls to these work as expected.
 */
 
