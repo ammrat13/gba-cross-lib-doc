@@ -20,56 +20,57 @@ MEMORY {
 
 SECTIONS {
 
-    /* Write the .text section - it stays in ROM */
-    .text : ALIGN(0x4) {
-        /* Make sure crt0 goes first because it has cartridge header */
-        *crt0.o(.text)
+    /* Align everything to a four-byte boundary since a word is four bytes */
 
-        /* Then have all the other files' .text sections and their preambles */
-        *(.text.startup)
-        *(.text)
-
-        /* Also auto-generated ARM sections */
-        *(.glue_7)
-        *(.glue_7t)
-        *(.v4_bx)
-        *(.vfp11_veneer)
-    } >crom
+    /* Make sure crt0.o goes first since it has the cartridge header */
+    /* We put the bootstrapping code in a separate section only for
+        organization - this can be put in another section as long as its at
+        the start of the cartridge ROM */
+    .text.bootstrap : ALIGN(0x4) { :crt0.o } >crom
 
 
-    /* Similarly do .rodata and keep it where it is */
+    /* Write every other file's text section and their preambles */
+    .text.startup : ALIGN(0x4) { *(.text.startup) } >crom
+    .text         : ALIGN(0x4) { *(.text)         } >crom
+
+    /* Also include the "glue" code generated for interworking */
+    .glue_7       : ALIGN(0x4) { *(.glue_7)       } >crom
+    .glue_7t      : ALIGN(0x4) { *(.glue_7t)      } >crom
+    .v4_bx        : ALIGN(0x4) { *(.v4_bx)        } >crom
+    .vfp11_veneer : ALIGN(0x4) { *(.vfp11_veneer) } >crom
+
+
+    /* Read-only data stays in the ROM */
     .rodata : ALIGN(0x4) { *(.rodata) } >crom
 
 
-    /* Not sure why PLT and GOT are being generated, but we should keep them */
-    .iplt     : ALIGN(0x4) { *(.iplt)     } >crom
-    .rel.iplt : ALIGN(0x4) { *(.rel.iplt) } >crom
-    .igot.plt : ALIGN(0x4) { *(.igot.plt) } >crom
-
-
-    /* We will copy .data into IWRAM */
-    /* Same for .bss, though we don't have to include it in the image */
+    /* We will copy .data into IWRAM from the ROM */
     .data : ALIGN(0x4){ *(.data) } >iwram AT>crom
-    .bss (NOLOAD) : ALIGN(0x4) {
-        *(.bss)
-        *(COMMON) /* Take the recommendation and put it here */
-    } AT>crom
+
+    /* The .bss section is also in IWRAM, but we don't need to put it in the
+        ROM image since it's initially zeroed out */
+    /* We also take the recommendation to put COMMON in .bss */
+    .bss (NOLOAD) : ALIGN(0x4) { *(.bss) *(COMMON) } >iwram
 
 
-    /* Define symbols to pass data to crt0 */
+    /* Define symbols to pass data to our loader */
     __data_vma = ADDR(.data);
     __data_lma = LOADADDR(.data);
     __data_len = SIZEOF(.data);
 
-    __bss_lma = LOADADDR(.bss);
+    __bss_vma = ADDR(.bss);
     __bss_len = SIZEOF(.bss);
 
 
     /* We don't care about these sections */
     /DISCARD/ : {
+        /* Debugging */
         *(.comment)
         *(.ARM.attributes)
         *(.debug_*)
+        /* Not entirely sure why these are being generated */
+        *(.iplt)
+        *(.rel.iplt)
+        *(.igot.plt)
     }
-
 }

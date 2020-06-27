@@ -43,7 +43,7 @@ Change into the source code's directory, make a build subdirectory, and `cd`
 into it. Then
 ```
 $ ../configure \
-    --prefix=$PREFIX/compiler --target=$TARGET --program-prefix=$TARGET- \
+    --prefix=$PREFIX/toolchain --target=$TARGET --program-prefix=$TARGET- \
     --with-march=armv4t --enable-languages=c --without-headers --disable-nls \
     --with-system-zlib --enable-lto --disable-threads \
     --enable-interwork --enable-nofmult \
