@@ -57,7 +57,7 @@ Alternatively, you can simply `make && make install` after configuring with
 ```
 ...
     --disable-libsanitizer --disable-libssp --disable-libvtv \
-    --disable-libquadmath --disable-libgomp \
+    --disable-libquadmath --disable-libgomp --disable-libstdcxx \
 ...
 ```
 This will also produce a minimal installation but one that includes LibCC1,
@@ -117,14 +117,14 @@ Additionally, we have a few options regarding what libraries to (not) compile:
              overflows. Presumably, this is responsible for inserting the 
              `**** stack smashing detected ***:` error on hosted systems. Again,
              we have no way of handling this error on the GBA.
- * `libvtv`: Is used to validate tables of virtual functions. They're a feature
-             of C++, which we didn't build support for.
+ * `libvtv`: Is used to validate tables of virtual functions. We won't be able
+             to run this on the GBA without additional configuration.
  * `libquadmath`: Allows programs to use 128-bit floats. On the GBA, you
                   shouldn't be using floats anyway.
  * `libgomp`: Allows for parallel processing using OpenMP. The GBA is
               single-threaded and doesn't have OpenMP support.
- * `libstdcxx`: The C++ standard library. Again, we didn't build support for the
-                language.
+ * `libstdcxx`: The C++ standard library. Again, we can't run this without more
+                configuration since the GBA is an embedded target.
 
 Finally, we gave some options for what parts of MultiLib to compile:
  * `interwork`: The GBA supports both ARM and THUMB machine code. This option
