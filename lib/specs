@@ -14,7 +14,7 @@
 -I%(INCLUDE_DIR) -mcpu=arm7tdmi -mthumb-interwork -ffreestanding
 
 *link:
--L%(INSTALL_DIR) -L%(LIB_DIR) -Tlnkscript --orphan-handling=error
+-L%(LIB_DIR) -Tlnkscript --orphan-handling=error
 
 *libgcc:
 -lgcc

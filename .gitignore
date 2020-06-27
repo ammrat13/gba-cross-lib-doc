@@ -1,0 +1,12 @@
+# Don't include the toolchain in commits
+toolchain/
+# Don't include the toolchain source either
+src/binutils-*/
+src/gcc-*/
+src/gdb-*/
+
+# Don't include compiled binaries
+lib/
+# But do include the linkscript and specs
+!lib/lnkscript
+!lib/specs
