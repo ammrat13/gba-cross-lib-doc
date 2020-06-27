@@ -5,11 +5,11 @@
 # appropriate directory. It could be reused elsewhere if needed.
 
 # Sensitive to these environment variables
-PREFIX ?= $(HOME)/AGBToolchain
+PREFIX ?= $(HOME)/gba-cross-lib-doc
 TARGET ?= arm-agb-eabi
 
 # Find where everything is and where to install
-PROGRAM_DIR := $(PREFIX)/compiler/bin
+PROGRAM_DIR := $(PREFIX)/toolchain/bin
 INSTALL_DIR := $(PREFIX)/lib
 
 # Get the locations for all the programs

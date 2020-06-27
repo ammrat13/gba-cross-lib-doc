@@ -153,11 +153,10 @@ adjustments:
    symbolic link that file to the `specs` you want.
  * Adjust the `specs` and `Makefile`s to point to your installation directory.
    This way you don't have to create and maintain a `$PREFIX` environment
-   variable. In `specs`, modify the second line to be what you set your
-   `$PREFIX` to be, and in the `Makefile`s just change the default value of
-   `PREFIX`. Also, if your directory structure differs from mine, modify
-   `INCLUDE_DIR` and `LIB_DIR` in `specs` as well as `PROGRAM_DIR` and
-   `INSTALL_DIR` in the `Makefile`s.
+   variable. In `specs`, change every instance of `%:getenv(PREFIX x)` to be
+   your installation directory followed by `x`. In the `Makefile`s, change the
+   default value of `PREFIX`. Also change the other paths if your directory
+   structure differs from mine.
  * Install crt0 and LibGCCMem (as I'm calling it). Compilation will not work
    without them.
 

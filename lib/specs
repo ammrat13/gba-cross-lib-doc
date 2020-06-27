@@ -1,20 +1,11 @@
-*INSTALL_DIR:
-%:getenv(PREFIX /)
-
-*INCLUDE_DIR:
-%(INSTALL_DIR)/include
-
-*LIB_DIR:
-%(INSTALL_DIR)/lib
-
 *as:
 -mthumb-interwork
 
 *cc1:
--I%(INCLUDE_DIR) -mcpu=arm7tdmi -mthumb-interwork -ffreestanding
+-I%:getenv(PREFIX /include) -mcpu=arm7tdmi -mthumb-interwork -ffreestanding
 
 *link:
--L%(LIB_DIR) -Tlnkscript --orphan-handling=error
+-L%:getenv(PREFIX /lib) -Tlnkscript --orphan-handling=error
 
 *libgcc:
 -lgcc
