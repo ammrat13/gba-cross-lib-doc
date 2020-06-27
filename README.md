@@ -44,8 +44,8 @@ into it. Then
 ```
 $ ../configure \
     --prefix=$PREFIX/toolchain --target=$TARGET --program-prefix=$TARGET- \
-    --with-march=armv4t --enable-languages=c --without-headers --disable-nls \
-    --with-system-zlib --enable-lto --disable-threads \
+    --with-march=armv4t --enable-languages=c,c++ --without-headers \
+    --with-system-zlib --enable-lto --disable-threads --disable-nls \
     --enable-interwork --enable-nofmult \
     --disable-fpu --disable-26bit --disable-biendian --disable-underscore
 $ make all-gcc && make install-gcc
@@ -68,7 +68,7 @@ Change into the source directory, make a build directory, and `cd` into it. Then
 ```
 $ ../configure \
     --prefix=$PREFIX/debugger --target=$TARGET --program-prefix=$TARGET- \
-    --enable-languages=c --disable-nls --with-system-zlib \
+    --enable-languages=c,c++ --disable-nls --with-system-zlib \
     --disable-libquadmath --disable-libstdcxx
 $ make && make install
 ```
@@ -90,8 +90,9 @@ We have several generic options used by most toolchain components:
                  allows the compiler to make optimizations and use instructions
                  specific to this processor, without regard to the code working
                  on others.
- * `enable-languages`: A list programming languages the compiler and debugger
-                       would need to support. We only compile C support.
+ * `enable-languages`: A comma-separated list programming languages the
+                       compiler and debugger would need to support. Use `c` for
+                       C support and `c++` for C++.
  * `with-sysroot`: When used without a parameter, allows Binutils to later run
                    with a standard system directory, much like `/` or`/usr`.
                    Note that GCC and Binutils must have the same system root.
