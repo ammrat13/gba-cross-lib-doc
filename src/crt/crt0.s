@@ -84,7 +84,6 @@ rom_entry_point:
     /* Remember that `pc` is usually current instruction plus 8 bytes */
     add     r0, pc, #0x1
     bx      r0
-
     .thumb
 
     /* Copy over the .data section using `memcpy` */

@@ -57,7 +57,6 @@ void *memset(void *p, int x, size_t num) {
     // The `man` page says to return a pointer to the start of the changed 
     //  memory, and we never changed `p`, so we can use that
     return p;
-
 }
 
 
@@ -78,5 +77,4 @@ void *memcpy(void *dst, const void *src, size_t num) {
 
     // We have to return what was passed in as `dst`, but we never changed it
     return dst;
-
 }
