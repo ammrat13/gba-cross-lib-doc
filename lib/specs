@@ -1,8 +1,11 @@
-*as:
+*asm:
 -mthumb-interwork
 
 *cc1:
 -I%:getenv(PREFIX /include) -mcpu=arm7tdmi -mthumb-interwork -ffreestanding
+
+*cc1plus:
+%(cc1) -fno-exceptions -fno-rtti
 
 *link:
 -L%:getenv(PREFIX /lib) -Tlnkscript --orphan-handling=error

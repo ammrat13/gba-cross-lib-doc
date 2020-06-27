@@ -12,6 +12,11 @@
 
 #include <stddef.h> // For size_t
 
+// Check for C++
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 
 __attribute__((target("thumb")))
 int memcmp(const void *p1, const void *p2, size_t num) {
@@ -78,3 +83,39 @@ void *memcpy(void *dst, const void *src, size_t num) {
     // We have to return what was passed in as `dst`, but we never changed it
     return dst;
 }
+
+
+__attribute__((target("thumb")))
+void *memmove(void *dst, const void *src, size_t num) {
+
+    // Again, use `char *` instead of `void *` se we can assign
+    const char *rsrc = (const char *) src;
+    char *rdst = (char *) dst;
+
+    // If the memory regions overlap, copy going up if src > dst and copy going
+    //  down if src < dst
+    // If the regions don't overlap, the result of the comparison is undefined,
+    //  but that's okay since we can copy in any direction
+    unsigned char copyDir = 1;
+    if(src < dst) {
+        copyDir = -1;
+        rsrc += num-1;
+        rdst += num-1;
+    }
+
+    // Actually do the copy
+    for(; num > 0; num--) {
+        *rdst = *rsrc;
+        rsrc += copyDir;
+        rdst += copyDir;
+    }
+
+    // Return what was passed in as `dst`, but we never changed it
+    return dst;
+}
+
+
+// Close the `extern "C"`
+#ifdef __cplusplus
+}
+#endif
