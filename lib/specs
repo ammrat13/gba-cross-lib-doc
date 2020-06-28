@@ -17,7 +17,7 @@
 -lgccmem
 
 *startfile:
--l:crt0.o -l:crti.o
+-l:crt0.o -l:crtin_common.o -l:crti.o -l:crtn.o
 
 *endfile:
 

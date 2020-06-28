@@ -22,16 +22,11 @@ CFLAGS := -v -O2
 LDFLAGS := -r
 
 # Files to build
-OBJFILES := crt0.o crti.o
+OBJFILES := crt0.o crti.o crtn.o crtin_common.o
 
 .PHONY : all
 all : $(OBJFILES)
 
-
-# Override the compilation for crti because we have to link
-crti.o : crti.c crtin_common.o
-	$(CC) $(CFLAGS) -c -o crti_specialized.o crti.c
-	$(LD) $(LDFLAGS) -o crti.o crti_specialized.o crtin_common.o
 
 # Specify two ways to compile object files - one from assembly and one from C
 %.o : %.s
