@@ -91,6 +91,13 @@ rom_entry_point:
     ldr     r1, =__data_lma
     ldr     r2, =__data_len
     bl      memcpy
+    /* We don't have to zero out the .bss section since the BIOS does it */
+
+    /* Call all the constructors */
+    bl      _init
 
     /* Call main */
     bl      main
+
+    /* Shutdown the system */
+    swi     #0x03

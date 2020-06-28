@@ -40,6 +40,30 @@ SECTIONS {
     .vfp11_veneer : ALIGN(0x4) { *(.vfp11_veneer) } >crom
 
 
+    /* Sections for constructors and destructors */
+    /* These sections don't have anything referencing them, so we use KEEP to
+        prevent them from being garbage collected by the linker */
+    /* Also handle priority in the constructors and destructors */
+    .init_array : ALIGN(0x4) {
+        KEEP(*(SORT_BY_NAME(.init_array.*)))
+        KEEP(*(.init_array))
+    } >crom
+    .fini_array : ALIGN(0x4) {
+        KEEP(*(SORT_BY_NAME(.fini_array.*)))
+        KEEP(*(.fini_array))
+    }
+
+    /* Pass data about .init_array and .fini_array to our loader so it can call
+        all the constructors and destructors */
+    /* We use start and end instead of length because that's easier for C's
+        typing to handle with the ways these symbols work */
+    /* Note that the end is just past the last element of the array */
+    __init_arr_stt = ADDR(.init_array);
+    __init_arr_end = ADDR(.init_array) + SIZEOF(.init_array);
+    __fini_arr_stt = ADDR(.fini_array);
+    __fini_arr_end = ADDR(.fini_array) + SIZEOF(.fini_array);
+
+
     /* Read-only data stays in the ROM */
     .rodata : ALIGN(0x4) { *(.rodata) } >crom
 
@@ -53,11 +77,12 @@ SECTIONS {
     .bss (NOLOAD) : ALIGN(0x4) { *(.bss) *(COMMON) } >iwram
 
 
-    /* Define symbols to pass data to our loader */
+    /* Define symbols to pass data to our loader to load the sections into the
+        right places */
+    /* These are read by assembly, so we don't have to worry about typing */
     __data_vma = ADDR(.data);
     __data_lma = LOADADDR(.data);
     __data_len = SIZEOF(.data);
-
     __bss_vma = ADDR(.bss);
     __bss_len = SIZEOF(.bss);
 

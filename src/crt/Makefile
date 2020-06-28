@@ -14,19 +14,19 @@ INSTALL_DIR := $(PREFIX)/lib
 
 # Get the locations for all the programs
 PROGRAM_PREFIX := $(PROGRAM_DIR)/$(TARGET)-
-AS := $(PROGRAM_PREFIX)as
+CC := $(PROGRAM_PREFIX)gcc
 
 # Flags for compilation
-ASFLAGS := -v -mthumb-interwork
+CFLAGS := -v -O2
 
 # Files to build
-OBJFILES := crt0.o
+OBJFILES := crt0.o crti.o
 
 .PHONY : all
 all : $(OBJFILES)
 
 %.o : %.s
-	$(AS) $(ASFLAGS) -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 .PHONY : install
 install :
