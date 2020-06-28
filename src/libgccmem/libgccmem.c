@@ -117,7 +117,6 @@ void *memmove(void *dst, const void *src, size_t num) {
 }
 
 
-// Close the `extern "C"`
 #ifdef __cplusplus
-}
+} // extern "C"
 #endif

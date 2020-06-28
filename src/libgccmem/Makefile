@@ -29,10 +29,10 @@ all : libgccmem.o
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 .PHONY : install
-install :
+install : all
 	install libgccmem.h $(INSTALL_INC_DIR)/libgccmem.h
 	install libgccmem.a $(INSTALL_LIB_DIR)/libgccmem.a
 
 .PHONY : clean
 clean :
-	rm -rfv libgccmem.a libgccmem.o
+	rm -rfv *.a *.o

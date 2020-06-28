@@ -18,10 +18,10 @@ extern "C" {
 
 #include <stddef.h> // For size_t
 
-__attribute__((target("thumb"))) int memcmp(const void *, const void *, size_t);
-__attribute__((target("thumb"))) void *memset(void *, int, size_t);
-__attribute__((target("thumb"))) void *memcpy(void *, const void *, size_t);
-__attribute__((target("thumb"))) void *memmove(void *, const void *, size_t);
+__attribute__((target("thumb"))) int memcmp(const void *p1, const void *p2, size_t num);
+__attribute__((target("thumb"))) void *memset(void *p, int x, size_t num);
+__attribute__((target("thumb"))) void *memcpy(void *dst, const void *src, size_t num);
+__attribute__((target("thumb"))) void *memmove(void *dst, const void *src, size_t num);
 
 
 #ifdef __cplusplus

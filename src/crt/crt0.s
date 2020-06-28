@@ -86,18 +86,12 @@ rom_entry_point:
     bx      r0
     .thumb
 
-    /* Copy over the .data section using `memcpy` */
-    ldr     r0, =__data_vma
-    ldr     r1, =__data_lma
-    ldr     r2, =__data_len
-    bl      memcpy
-    /* We don't have to zero out the .bss section since the BIOS does it */
-
-    /* Call all the constructors */
+    /* Do the setup needed before calling main() */
+    /* Defined in `crti.c` */
     bl      _init
 
     /* Call main */
     bl      main
 
-    /* Shutdown the system */
-    swi     #0x03
+    /* Emulators don't handle shutdown very well, so just hard reset */
+    swi     #0x26

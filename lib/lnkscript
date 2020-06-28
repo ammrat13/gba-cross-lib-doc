@@ -56,7 +56,7 @@ SECTIONS {
     /* Pass data about .init_array and .fini_array to our loader so it can call
         all the constructors and destructors */
     /* We use start and end instead of length because that's easier for C's
-        typing to handle with the ways these symbols work */
+        typing to handle with the weird ways these symbols work */
     /* Note that the end is just past the last element of the array */
     __init_arr_stt = ADDR(.init_array);
     __init_arr_end = ADDR(.init_array) + SIZEOF(.init_array);
@@ -76,15 +76,15 @@ SECTIONS {
     /* We also take the recommendation to put COMMON in .bss */
     .bss (NOLOAD) : ALIGN(0x4) { *(.bss) *(COMMON) } >iwram
 
+    /* The .noinit section is just like .bss except it isn't zeroed */
+    .noinit (NOLOAD) : ALIGN(0x4) { *(.noinit) } >iwram
 
-    /* Define symbols to pass data to our loader to load the sections into the
-        right places */
-    /* These are read by assembly, so we don't have to worry about typing */
-    __data_vma = ADDR(.data);
-    __data_lma = LOADADDR(.data);
-    __data_len = SIZEOF(.data);
-    __bss_vma = ADDR(.bss);
-    __bss_len = SIZEOF(.bss);
+    /* Again, define symbols to pass to our loader */
+    __data_vma_stt = ADDR(.data);
+    __data_vma_end = ADDR(.data) + SIZEOF(.data);
+    __data_lma     = LOADADDR(.data);
+    __bss_vma_stt = ADDR(.bss);
+    __bss_vma_end = ADDR(.bss) + SIZEOF(.bss);
 
 
     /* We don't care about these sections */
