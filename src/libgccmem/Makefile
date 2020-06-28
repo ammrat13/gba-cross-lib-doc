@@ -10,7 +10,8 @@ TARGET ?= arm-agb-eabi
 
 # Find where everything is and where to install
 PROGRAM_DIR := $(PREFIX)/toolchain/bin
-INSTALL_DIR := $(PREFIX)/lib
+INSTALL_LIB_DIR := $(PREFIX)/lib
+INSTALL_INC_DIR := $(PREFIX)/include
 
 # Get the locations for all the programs
 PROGRAM_PREFIX := $(PROGRAM_DIR)/$(TARGET)-
@@ -29,7 +30,8 @@ all : libgccmem.o
 
 .PHONY : install
 install :
-	install libgccmem.a $(INSTALL_DIR)/libgccmem.a
+	install libgccmem.h $(INSTALL_INC_DIR)/libgccmem.h
+	install libgccmem.a $(INSTALL_LIB_DIR)/libgccmem.a
 
 .PHONY : clean
 clean :

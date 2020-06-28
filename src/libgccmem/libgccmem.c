@@ -10,7 +10,8 @@
     compile with `-mthumb-interwork` so calls to these work as expected.
 */
 
-#include <stddef.h> // For size_t
+#include "libgccmem.h"
+
 
 // Check for C++
 #ifdef __cplusplus
@@ -45,17 +46,18 @@ int memcmp(const void *p1, const void *p2, size_t num) {
 __attribute__((target("thumb")))
 void *memset(void *p, int x, size_t num) {
 
-    // This function will truncate `x` and only take the least significant byte
-    // The `man` page doesn't document this behavior, but it was based on tests 
-    //  on x86_64
+    // Note that, even though `x` is passed as an integer, we fill with the
+    //  result of it being casted to an `unsigned char`. This behavior isn't
+    //  documented in the `man` pages.
+    // See: http://www.cplusplus.com/reference/cstring/memset/
 
-    // We can't assign to `void *`, so cast to an 8-bit type
-    char *rp = (char *) p;
+    // We can't assign to `void *`, so cast to the appropriate type
+    unsigned char *rp = (unsigned char *) p;
 
     // Modify exactly `num` `char`s
     for(; num > 0; num--) {
         // Assign and increment
-        *rp = (char) x;
+        *rp = (unsigned char) x;
         rp++;
     }
 
