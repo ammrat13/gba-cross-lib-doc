@@ -15,6 +15,7 @@ extern "C" {
 
 
 __attribute__((target("arm"))) _Noreturn void _start(void);
+__attribute__((target("thumb"))) _Noreturn void _end(int errCode);
 __attribute__((target("thumb"))) void _init(void);
 
 

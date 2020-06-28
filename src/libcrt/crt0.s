@@ -4,9 +4,10 @@
 
     Basic starup routine for GBA games. Is responsible for the cartridge header,
     copying data from ROM into RAM, setting up the stack, then calling `main`.
-    Note that there is no operating system to pass parameters or handle failure,
-    so the declatation should be `void main(void)`. Also note that this file
-    does not handle interrupts or set up the IRQ stack.
+    Note that there is no operating system to pass parameters, so the
+    declatation should be `int main(void)`, where the integer return is only
+    used for debugging. Also note that this file does not handle interrupts or
+    set up the IRQ stack.
 */
 
     .text
@@ -93,7 +94,11 @@ rom_entry_point:
     /* Call main */
     bl      main
 
-    /* Don't worry about teardown since we shutdown after this anyway */
-
-    /* Emulators don't handle shutdown very well, so just hard reset */
-    swi     #0x26
+    /* Add an external code point for program destruction. We might call this
+        from an error handler */
+    /* Error code, if any, goes in r0 as the first argument */
+    .global _end
+_end:
+    /* Don't worry about teardown since we shutdown anyway */
+    /* Emulators can't exactly shutdown, so just spinlock */
+    b       _end

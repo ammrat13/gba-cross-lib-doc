@@ -2,7 +2,7 @@
 -mthumb-interwork
 
 *cc1:
--I%:getenv(PREFIX /include) -mcpu=arm7tdmi -mthumb -mthumb-interwork -ffreestanding
+-I%:getenv(PREFIX /include) -mcpu=arm7tdmi -mthumb-interwork -ffreestanding
 
 *cc1plus:
 %(cc1) -fno-exceptions -fno-rtti
