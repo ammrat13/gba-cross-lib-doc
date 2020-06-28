@@ -10,3 +10,6 @@ lib/
 # But do include the linkscript and specs
 !lib/lnkscript
 !lib/specs
+
+# Don't include headers since they're installed with binaries
+include/

@@ -93,9 +93,7 @@ rom_entry_point:
     /* Call main */
     bl      main
 
-    /* Do teardown, even though it's not strictly needec */
-    /* Defined in `crtn.c` */
-    bl      _fini
+    /* Don't worry about teardown since we shutdown after this anyway */
 
     /* Emulators don't handle shutdown very well, so just hard reset */
     swi     #0x26

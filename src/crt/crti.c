@@ -11,7 +11,6 @@
 */
 
 #include <libgccmem.h> // For memcpy(), memset(), and size_t
-#include "crtin_common.h" // For _call_func_table()
 
 // Prevent name mangling
 #ifdef __cplusplus
@@ -60,11 +59,10 @@ void _init(void) {
     );
 
     // Call all the constructors
-    // Pointer arithmetic takes care of sizing for us
-    _call_func_table(
-        &__init_arr_stt,
-        (size_t) (&__init_arr_end - &__init_arr_stt)
-    );
+    // Remember that the `_end` symbol points to the first element past the end
+    for(void (**f)(void) = &__init_arr_stt; f != &__init_arr_end; f++) {
+        (**f)();
+    }
 }
 
 

@@ -10,23 +10,21 @@ TARGET ?= arm-agb-eabi
 
 # Find where everything is and where to install
 PROGRAM_DIR := $(PREFIX)/toolchain/bin
-INSTALL_DIR := $(PREFIX)/lib
+LIB_DIR := $(PREFIX)/lib
+INCLUDE_DIR := $(PREFIX)/include
 
 # Get the locations for all the programs
 PROGRAM_PREFIX := $(PROGRAM_DIR)/$(TARGET)-
 CC := $(PROGRAM_PREFIX)gcc
-LD := $(PROGRAM_PREFIX)ld
 
 # Flags for compilation and linking
 CFLAGS := -v -O2
-LDFLAGS := -r
 
 # Files to build
-OBJFILES := crt0.o crti.o crtn.o crtin_common.o
+OBJFILES := crt0.o crti.o
 
 .PHONY : all
 all : $(OBJFILES)
-
 
 # Specify two ways to compile object files - one from assembly and one from C
 %.o : %.s
@@ -34,10 +32,10 @@ all : $(OBJFILES)
 %.o : %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-
 .PHONY : install
 install : all
-	install -t $(INSTALL_DIR) $(OBJFILES)
+	install -t $(INCLUDE_DIR) crt.h
+	install -t $(LIB_DIR) $(OBJFILES)
 
 .PHONY : clean
 clean :

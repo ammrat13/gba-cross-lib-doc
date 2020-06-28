@@ -2,7 +2,7 @@
 -mthumb-interwork
 
 *cc1:
--I%:getenv(PREFIX /include) -mcpu=arm7tdmi -mthumb-interwork -ffreestanding
+-I%:getenv(PREFIX /include) -mcpu=arm7tdmi -mthumb -mthumb-interwork -ffreestanding
 
 *cc1plus:
 %(cc1) -fno-exceptions -fno-rtti
@@ -17,7 +17,7 @@
 -lgccmem
 
 *startfile:
--l:crt0.o -l:crtin_common.o -l:crti.o -l:crtn.o
+-l:crt0.o -l:crti.o
 
 *endfile:
 
