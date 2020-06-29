@@ -10,7 +10,7 @@
     compile with `-mthumb-interwork` so calls to these work as expected.
 */
 
-#include "libgccmem.h"
+#include "gccmem.h"
 
 
 // Check for C++

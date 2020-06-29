@@ -10,7 +10,8 @@
     Again, these functions are all in THUMB for optimization. Account for that.
 */
 
-#include <libgccmem.h> // For memcpy(), memset(), and size_t
+#include <gccmem.h> // For memcpy(), memset(), and size_t
+#include "crt.h"
 
 // Prevent name mangling
 #ifdef __cplusplus

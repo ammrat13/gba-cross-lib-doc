@@ -22,15 +22,15 @@ AR := $(PROGRAM_PREFIX)ar
 CFLAGS := -v -O2
 
 .PHONY : all
-all : libgccmem.o
-	$(AR) -rcs libgccmem.a libgccmem.o
+all : gccmem.o
+	$(AR) -rcs libgccmem.a gccmem.o
 
 %.o : %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 .PHONY : install
 install : all
-	install libgccmem.h $(INSTALL_INC_DIR)/libgccmem.h
+	install gccmem.h $(INSTALL_INC_DIR)/gccmem.h
 	install libgccmem.a $(INSTALL_LIB_DIR)/libgccmem.a
 
 .PHONY : clean
