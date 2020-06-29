@@ -29,9 +29,8 @@ SECTIONS {
     .text.bootstrap : ALIGN(0x4) { :crt0.o } >crom
 
 
-    /* Write every other file's text section and their preambles */
-    .text.startup : ALIGN(0x4) { *(.text.startup) } >crom
-    .text         : ALIGN(0x4) { *(.text)         } >crom
+    /* Write every other file's text section and variants of it */
+    .text : ALIGN(0x4) { *( SORT_BY_NAME(.text*) ) } >crom
 
     /* Also include the "glue" code generated for interworking */
     .glue_7       : ALIGN(0x4) { *(.glue_7)       } >crom

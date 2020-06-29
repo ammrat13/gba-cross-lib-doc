@@ -14,9 +14,13 @@ extern "C" {
 #endif
 
 
-__attribute__((target("arm"))) _Noreturn void _start(void);
-__attribute__((target("thumb"))) _Noreturn void _end(int errCode);
+__attribute__((target("arm"), noreturn)) void _start(void);
+__attribute__((target("thumb"), noreturn)) void _end(int errCode);
 __attribute__((target("thumb"))) void _init(void);
+
+// Other files may define error codes to pass to _end
+// We only define one here
+#define ERR_SUCCESS (0x0)
 
 
 #ifdef __cplusplus
