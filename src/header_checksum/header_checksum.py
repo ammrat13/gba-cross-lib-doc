@@ -10,6 +10,7 @@
 # respectively. The version number is taken modulo 256 to fit it into one byte.
 
 from sys import argv
+from itertools import islice, chain, repeat
 
 
 # Get command line arguments
@@ -22,20 +23,18 @@ VERSION_NUM = int(argv[4])    if len(argv) >= 5 and argv[4].isdigit() else 0
 # Array we will use in computing the checksum
 compute_array = [0] * 29
 
-# Copies exactly `length` characters of `string` into `compute_array` starting
-#   at `offset`, truncating or padding with nulls if needed
-def populate_compute_array(string, length, offset):
-    for i in range(length):
-        try:
-            compute_array[offset + i] = ord(string[i])
-        except IndexError:
-            compute_array[offset + i] = 0
-
+# Returns an iterator of length exactly `l` with elements taken from `it`
+# It either truncates or pads with `pad` if needed
+def take_exactly(it, l, pad=None):
+    return islice(
+        chain(it, repeat(pad)),
+        0, l
+    )
 
 # Populate the array
-populate_compute_array(GAME_NAME, 12, 0)
-populate_compute_array(GAME_CODE, 4, 12)
-populate_compute_array(MAKER_CODE, 2, 16)
+compute_array[0:12]  = take_exactly( map(ord,GAME_NAME), 12, pad=0)
+compute_array[12:16] = take_exactly( map(ord,GAME_CODE),  4, pad=0)
+compute_array[16:18] = take_exactly( map(ord,MAKER_CODE), 2, pad=0)
 
 compute_array[18] = 0x96  # Fixed value
 compute_array[19] = 0x00  # Main unit code
@@ -48,10 +47,7 @@ compute_array[28] = VERSION_NUM % 0x100
 
 # Compute as described on GBATek and in devKit's `gbafix`
 # Note that doing `& 0xff` is equivalent to `% 0x100`
-checksum = 0
-for n in compute_array:
-    checksum = checksum - n
-checksum = (checksum - 0x19) % 0x100
+checksum = -sum(compute_array, 0x19) % 0x100
 
 
 print(f"Header Bytes: {compute_array}")
