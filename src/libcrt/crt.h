@@ -3,7 +3,8 @@
     By: Ammar Ratnani
 
     Defines symbols used during program startup. I don't know why you'd call
-    any of these manually (maybe for resetting), but they're there.
+    any of these manually (maybe for resetting or terminating prematurely), but
+    they're there.
 */
 
 #ifndef CRT_H

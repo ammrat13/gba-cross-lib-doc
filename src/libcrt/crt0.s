@@ -76,10 +76,11 @@ cartridge_header:
 /* The real entry point of the code */
 rom_entry_point:
 
-    /* Set the stack pointer to 0x3008000 - the end of IWRAM */
-    /* We can do this in two instructions w/ ARM's shift feature */
+    /* Set the stack pointer to 0x3007f00. This isn't quite the end of IWRAM,
+       since the last 256 bytes are reserved. */
+    /* See: GBATek > GBA Memory Map */
     mov     sp, #0x3000000
-    add     sp, #0x8000
+    add     sp, #0x7f00
 
     /* We started in ARM mode, so switch to THUMB */
     /* Remember that `pc` is usually current instruction plus 8 bytes */
