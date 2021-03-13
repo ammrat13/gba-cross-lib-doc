@@ -26,7 +26,7 @@ int memcmp(const void *p1, const void *p2, size_t num) {
     for(; num > 0; num--) {
 
         // Treat the `void *`s as `unsigned char *` and compare
-        // We use `unsigned char` instead of `char` because the `man` page 
+        // We use `unsigned char` instead of `char` because the `man` page
         //  says so
         unsigned char c1 = *((unsigned char *) p1);
         unsigned char c2 = *((unsigned char *) p2);
@@ -61,7 +61,7 @@ void *memset(void *p, int x, size_t num) {
         rp++;
     }
 
-    // The `man` page says to return a pointer to the start of the changed 
+    // The `man` page says to return a pointer to the start of the changed
     //  memory, and we never changed `p`, so we can use that
     return p;
 }

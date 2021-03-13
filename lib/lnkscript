@@ -26,7 +26,7 @@ SECTIONS {
     /* We put the bootstrapping code in a separate section only for
         organization - this can be put in another section as long as its at
         the start of the cartridge ROM */
-    .text.bootstrap : ALIGN(0x4) { KEEP(*crt0.o) } >crom
+    .text.bootstrap : ALIGN(0x4) { KEEP( *crt0.o(*) ) } >crom
 
 
     /* Write every other file's text section and variants of it */
