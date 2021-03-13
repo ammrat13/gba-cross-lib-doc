@@ -50,7 +50,7 @@ SECTIONS {
     .fini_array : ALIGN(0x4) {
         KEEP(*(SORT_BY_NAME(.fini_array.*)))
         KEEP(*(.fini_array))
-    }
+    } >crom
 
     /* Pass data about .init_array and .fini_array to our loader so it can call
         all the constructors and destructors */
