@@ -26,11 +26,11 @@ SECTIONS {
     /* We put the bootstrapping code in a separate section only for
         organization - this can be put in another section as long as its at
         the start of the cartridge ROM */
-    .text.bootstrap : ALIGN(0x4) { :crt0.o } >crom
+    .text.bootstrap : ALIGN(0x4) { KEEP(*crt0.o) } >crom
 
 
     /* Write every other file's text section and variants of it */
-    .text : ALIGN(0x4) { *( SORT_BY_NAME(.text*) ) } >crom
+    .text : ALIGN(0x4) { EXCLUDE_FILE(*crt0.o) *(.text*) } >crom
 
     /* Also include the "glue" code generated for interworking */
     .glue_7       : ALIGN(0x4) { *(.glue_7)       } >crom
@@ -44,11 +44,11 @@ SECTIONS {
         prevent them from being garbage collected by the linker */
     /* Also handle priority in the constructors and destructors */
     .init_array : ALIGN(0x4) {
-        KEEP(*(SORT_BY_NAME(.init_array.*)))
+        KEEP(*(SORT_BY_INIT_PRIORITY(.init_array.*)))
         KEEP(*(.init_array))
     } >crom
     .fini_array : ALIGN(0x4) {
-        KEEP(*(SORT_BY_NAME(.fini_array.*)))
+        KEEP(*(SORT_BY_INIT_PRIORITY(.fini_array.*)))
         KEEP(*(.fini_array))
     } >crom
 

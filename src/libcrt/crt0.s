@@ -10,7 +10,7 @@
     set up the IRQ stack.
 */
 
-    .text
+    .section ".text.bootstrap", "x"
 
 /* The processor starts in ARM mode, so account for that */
     .arm
@@ -19,8 +19,6 @@
    Note that we immediately jump to later to make space for the header */
     .global _start
 _start:
-
-    /* ROM entry point */
     b       rom_entry_point
 
 
