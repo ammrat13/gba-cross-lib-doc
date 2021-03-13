@@ -18,7 +18,8 @@ CC := $(PROGRAM_PREFIX)$(TARGET)-gcc
 AR := $(PROGRAM_PREFIX)$(TARGET)-ar
 
 # Flags for compilation
-CFLAGS := -v -O2
+# We say no builtins because we're implementing them
+CFLAGS := -fno-builtin -v -O2
 
 .PHONY : all
 all : gccmem.o
