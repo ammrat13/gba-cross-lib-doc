@@ -1,21 +1,20 @@
 # Makefile for CRT Files
 # By: Ammar Ratnani
 #
-# This file just assembles all the specified files and installs them into the 
+# This file just assembles all the specified files and installs them into the
 # appropriate directory. It could be reused elsewhere if needed.
 
 # Sensitive to these environment variables
 PREFIX ?= $(HOME)/gba-cross-lib-doc
 TARGET ?= arm-agb-eabi
+#PROGRAM_PREFIX ?= ""
 
-# Find where everything is and where to install
-PROGRAM_DIR := $(PREFIX)/toolchain/bin
-LIB_DIR := $(PREFIX)/lib
-INCLUDE_DIR := $(PREFIX)/include
+# Where to install
+INSTALL_LIB_DIR := $(PREFIX)/lib
+INSTALL_INC_DIR := $(PREFIX)/include
 
-# Get the locations for all the programs
-PROGRAM_PREFIX := $(PROGRAM_DIR)/$(TARGET)-
-CC := $(PROGRAM_PREFIX)gcc
+# Get all the programs
+CC := $(PROGRAM_PREFIX)$(TARGET)-gcc
 
 # Flags for compilation and linking
 CFLAGS := -v -O2
@@ -34,8 +33,8 @@ all : $(OBJFILES)
 
 .PHONY : install
 install : all
-	install -t $(INCLUDE_DIR) crt.h
-	install -t $(LIB_DIR) $(OBJFILES)
+	install -D -t $(INSTALL_INC_DIR) crt.h
+	install -D -t $(INSTALL_LIB_DIR) $(OBJFILES)
 
 .PHONY : clean
 clean :

@@ -1,22 +1,21 @@
 # Makefile for LibGCCMem
 # By: Ammar Ratnani
 #
-# This file will simply compile the one file in this library, turn it into an 
+# This file will simply compile the one file in this library, turn it into an
 # archive for linking, then move it to the right place.
 
 # Sensitive to these environment variables
 PREFIX ?= $(HOME)/gba-cross-lib-doc
 TARGET ?= arm-agb-eabi
+#PROGRAM_PREFIX ?= ""
 
-# Find where everything is and where to install
-PROGRAM_DIR := $(PREFIX)/toolchain/bin
+# Where to install
 INSTALL_LIB_DIR := $(PREFIX)/lib
 INSTALL_INC_DIR := $(PREFIX)/include
 
 # Get the locations for all the programs
-PROGRAM_PREFIX := $(PROGRAM_DIR)/$(TARGET)-
-CC := $(PROGRAM_PREFIX)gcc
-AR := $(PROGRAM_PREFIX)ar
+CC := $(PROGRAM_PREFIX)$(TARGET)-gcc
+AR := $(PROGRAM_PREFIX)$(TARGET)-ar
 
 # Flags for compilation
 CFLAGS := -v -O2
@@ -30,8 +29,8 @@ all : gccmem.o
 
 .PHONY : install
 install : all
-	install gccmem.h $(INSTALL_INC_DIR)/gccmem.h
-	install libgccmem.a $(INSTALL_LIB_DIR)/libgccmem.a
+	install -D -t $(INSTALL_INC_DIR) gccmem.h
+	install -D -t $(INSTALL_LIB_DIR) libgccmem.a
 
 .PHONY : clean
 clean :
