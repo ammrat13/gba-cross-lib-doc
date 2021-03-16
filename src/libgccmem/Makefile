@@ -19,7 +19,7 @@ AR := $(PROGRAM_PREFIX)$(TARGET)-ar
 
 # Flags for compilation
 # We say no builtins because we're implementing them
-CFLAGS := -fno-builtin -v -O2
+CFLAGS := -fno-builtin -ffunction-sections -v -O2
 
 .PHONY : all
 all : gccmem.o
