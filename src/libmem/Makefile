@@ -1,7 +1,7 @@
-# Makefile for LibGCCMem
+# Makefile for LibMem
 # By: Ammar Ratnani
 #
-# This file will simply compile the one file in this library, turn it into an
+# This file will simply compile the files in this library, turn them into an
 # archive for linking, then move it to the right place.
 
 # Sensitive to these environment variables
@@ -21,17 +21,24 @@ AR := $(PROGRAM_PREFIX)$(TARGET)-ar
 # We say no builtins because we're implementing them
 CFLAGS := -fno-builtin -ffunction-sections -v -O2
 
+# Files to include and build
+INCFILES := mem.h
+OBJFILES := gcc_mem.o
+# The final name of the archive
+ARFILE := libmem.a
+
+
 .PHONY : all
-all : gccmem.o
-	$(AR) -rcs libgccmem.a gccmem.o
+all : $(OBJFILES)
+	$(AR) -rcs $(ARFILE) $(OBJFILES)
 
 %.o : %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 .PHONY : install
 install : all
-	install -D -t $(INSTALL_INC_DIR) gccmem.h
-	install -D -t $(INSTALL_LIB_DIR) libgccmem.a
+	install -D -t $(INSTALL_INC_DIR) $(INCFILES)
+	install -D -t $(INSTALL_LIB_DIR) $(ARFILE)
 
 .PHONY : clean
 clean :
