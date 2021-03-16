@@ -3,11 +3,11 @@
     By: Ammar Ratnani
 
     Basic starup routine for GBA games. Is responsible for the cartridge header,
-    copying data from ROM into RAM, setting up the stack, then calling `main`.
-    Note that there is no operating system to pass parameters, so the
-    declatation should be `int main(void)`, where the integer return is only
-    used for debugging. Also note that this file does not handle interrupts or
-    set up the IRQ stack.
+    copying data from ROM into RAM, then calling `main`. Note that there is no
+    OS to pass parameters, so the declaration should be `int main(void)`, where
+    the return value is only used for debugging.
+
+    We don't need to set up the stacks since the BIOS already does that for us.
 */
 
     .section ".text.bootstrap", "x"
@@ -73,12 +73,6 @@ cartridge_header:
 
 /* The real entry point of the code */
 rom_entry_point:
-
-    /* Set the stack pointer to 0x3007f00. This isn't quite the end of IWRAM,
-       since the last 256 bytes are reserved. */
-    /* See: GBATek > GBA Memory Map */
-    mov     sp, #0x3000000
-    add     sp, #0x7f00
 
     /* We started in ARM mode, so switch to THUMB */
     /* Remember that `pc` is usually current instruction plus 8 bytes */
