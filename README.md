@@ -5,6 +5,10 @@ only supports Assembly, C, and very basic C++, and it doesn't have a `malloc` or
 even a standard library. Nonetheless, it can compile simple games, such as the
 ones developed in Georgia Tech's CS 2110.
 
+Below, I detail how to build a GCC-based toolchain. The stock
+`arm-none-eabi-gcc` compiler works as well. However, `clang` does not since it
+doesn't support interworking.
+
 
 ## Directory Structure
 The directory structure that I used when making this library and that I wrote
@@ -36,7 +40,7 @@ $ ../configure \
     --with-system-zlib --with-sysroot --disable-nls \
     --enable-plugins --enable-lto \
     --enable-interwork --enable-nofmult \
-    --disable-fpu --disable-26bit --disable-biendian --disable-underscore 
+    --disable-fpu --disable-26bit --disable-biendian --disable-underscore
 $ make && make install
 ```
 
@@ -117,7 +121,7 @@ Additionally, we have a few options regarding what libraries to (not) compile:
                    invalid addresses, memory leaks, and undefined behavior. We
                    have no way to handle these exceptions on the GBA.
  * `libssp`: Used to detect stack smashing attempts, usually due to buffer
-             overflows. Presumably, this is responsible for inserting the 
+             overflows. Presumably, this is responsible for inserting the
              `**** stack smashing detected ***:` error on hosted systems. It
              requires some additional setup to get working on the GBA.
  * `libvtv`: Is used to validate tables of virtual functions. We won't be able
@@ -131,7 +135,7 @@ Additionally, we have a few options regarding what libraries to (not) compile:
 
 Finally, we gave some options for what parts of MultiLib to compile:
  * `interwork`: The GBA supports both ARM and THUMB machine code. This option
-                should enable GCC to generate code to allow us to call one type 
+                should enable GCC to generate code to allow us to call one type
                 of assembly language from another.
  * `nofmult`: By default, GCC will be compiled with support for finite-field
               multiplication instructions. The GBA has none of these, so we
