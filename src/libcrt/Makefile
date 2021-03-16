@@ -19,8 +19,10 @@ CC := $(PROGRAM_PREFIX)$(TARGET)-gcc
 # Flags for compilation and linking
 CFLAGS := -v -O2
 
-# Files to build
+# Files to include and build
+INCFILES := crt.h
 OBJFILES := crt0.o crti.o
+
 
 .PHONY : all
 all : $(OBJFILES)
@@ -33,7 +35,7 @@ all : $(OBJFILES)
 
 .PHONY : install
 install : all
-	install -D -t $(INSTALL_INC_DIR) crt.h
+	install -D -t $(INSTALL_INC_DIR) $(INCFILES)
 	install -D -t $(INSTALL_LIB_DIR) $(OBJFILES)
 
 .PHONY : clean
