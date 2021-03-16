@@ -14,11 +14,9 @@
 -lgcc
 
 *lib:
--lgccmem
+-lmem
 
 *startfile:
 -l:crt0.o -l:crti.o
 
 *endfile:
-
-
