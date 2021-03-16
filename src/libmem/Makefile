@@ -23,7 +23,7 @@ CFLAGS := -fno-builtin -ffunction-sections -v -O2
 
 # Files to include and build
 INCFILES := mem.h
-OBJFILES := gcc_mem.o
+OBJFILES := gcc_mem.o aeabi_mem_movement.o
 # The final name of the archive
 ARFILE := libmem.a
 

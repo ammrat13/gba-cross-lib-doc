@@ -7,8 +7,8 @@
     sure to compile with `-mthumb-interwork`.
 */
 
-#ifndef MEM_H
-#define MEM_H
+#ifndef _MEM_H
+#define _MEM_H
 
 // The functions don't require C++, so don't name mangle them
 #ifdef __cplusplus
@@ -28,11 +28,11 @@ __attribute__((target("thumb"))) void *memmove(void *dest, const void *src, size
 __attribute__((target("thumb"))) void __aeabi_memcpy(void *dest, const void *src, size_t n);
 __attribute__((target("thumb"))) void __aeabi_memmove(void *dest, const void *src, size_t n);
 __attribute__((target("thumb"))) void __aeabi_memset(void *s, size_t n, int c);
-__attribute__((target("thumb"))) void __aeabi_memclr(void *s, size_t n, int c);
+__attribute__((target("thumb"))) void __aeabi_memclr(void *s, size_t n);
 
 
 #ifdef __cplusplus
 } // extern "C"
 #endif
 
-#endif // ndef MEM_H
+#endif // ndef _MEM_H

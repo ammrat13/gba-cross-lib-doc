@@ -43,76 +43,35 @@ int memcmp(const void *s1, const void *s2, size_t n) {
 }
 
 
+/*
+    For the rest of the functions, we just chain to `aeabi_mem_movement`. The
+    ABI functions do more or less the same thing, and this prevents code
+    duplication. We just need to be mindful of the return value.
+*/
+
 __attribute__((target("thumb")))
 void *memset(void *s, int c, size_t n) {
-
-    // Note that, even though `c` is passed as an integer, we fill with the
-    //  result of it being casted to an `unsigned char`. This behavior isn't
-    //  documented in the `man` pages.
-    // See: http://www.cplusplus.com/reference/cstring/memset/
-
-    // We can't assign to `void *`, so cast to the appropriate type
-    unsigned char *rs = (unsigned char *) s;
-
-    // Modify exactly `n` `char`s
-    for(; n > 0; n--) {
-        // Assign and increment
-        *rs = (unsigned char) c;
-        rs++;
-    }
-
+    // Chain the call
+    // Mind the ordering of the parameters
+    __aeabi_memset(s, n, c);
     // The `man` page says to return a pointer to the start of the changed
     //  memory, and we never changed `s`, so we can use that
     return s;
 }
 
-
 __attribute__((target("thumb")))
 void *memcpy(void *dest, const void *src, size_t n) {
-
-    // We can't assign or dereference `void *`, so use a `char *` instead
-    const char *rsrc = (const char *) src;
-    char *rdest = (char *) dest;
-
-    // Copy exactly `n` `char`s
-    for(; n > 0; n--) {
-        // Do the copy then increment both pointers
-        *rdest = *rsrc;
-        rsrc++;
-        rdest++;
-    }
-
-    // We have to return what was passed in as `dest`, but we never changed it
+    // Chain the call
+    __aeabi_memcpy(dest, src, n);
+    // Return what was passed in `dest`
     return dest;
 }
 
-
 __attribute__((target("thumb")))
 void *memmove(void *dest, const void *src, size_t n) {
-
-    // Again, use `char *` instead of `void *` se we can assign
-    const char *rsrc = (const char *) src;
-    char *rdest = (char *) dest;
-
-    // If the memory regions overlap, copy going up if src > dest and copy going
-    //  down if src < dest
-    // If the regions don't overlap, the result of the comparison is undefined,
-    //  but that's okay since we can copy in any direction
-    unsigned char copyDir = 1;
-    if(src < dest) {
-        copyDir = -1;
-        rsrc += n-1;
-        rdest += n-1;
-    }
-
-    // Actually do the copy
-    for(; n > 0; n--) {
-        *rdest = *rsrc;
-        rsrc += copyDir;
-        rdest += copyDir;
-    }
-
-    // Return what was passed in as `dest`, but we never changed it
+    // Chain the call
+    __aeabi_memmove(dest, src, n);
+    // Return what was passed in `dest`
     return dest;
 }
 
