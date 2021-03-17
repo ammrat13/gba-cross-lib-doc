@@ -11,14 +11,16 @@ COPY src/ .
 RUN PREFIX=/gba-lib TARGET=arm-none-eabi make install
 
 # Copy the auxilary files
-WORKDIR /gba-lib/aux-files
+WORKDIR /gba-lib/aux-files/
 COPY aux-files/ .
 
 
 # Set the command to build the game
-# We assume it's mounted at `/game/`
-WORKDIR /game/
+# We assume it's mounted at `/work/`
+WORKDIR /work/
 CMD [ "make", \
       "PREFIX=/gba-lib", \
+      "HOST=", \
       "TARGET=arm-none-eabi", \
-      "CC=arm-none-eabi-gcc -specs=/gba-lib/aux-files/specs -T/gba-lib/aux-files/lnkscript" ]
+      "SPECS=/gba-lib/aux-files/specs", \
+      "LNKSCRIPT=/gba-lib/aux-files/lnkscript" ]
