@@ -2,7 +2,10 @@
 # By: Ammar Ratnani
 #
 # This file just assembles all the specified files and installs them into the
-# appropriate directory. It could be reused elsewhere if needed.
+# appropriate directory.
+#
+# Note that we require LibMem's headers to already be installed. See the `INC`
+# variable.
 
 # Sensitive to these environment variables
 PREFIX ?= $(HOME)/gba-cross-lib-doc
@@ -18,6 +21,8 @@ CC := $(PROGRAM_PREFIX)$(TARGET)-gcc
 
 # Flags for compilation and linking
 CFLAGS := -v -O2
+# Also an include since we require headers
+INC := -I$(PREFIX)/include
 
 # Files to include and build
 INCFILES := crt.h
@@ -29,9 +34,9 @@ all : $(OBJFILES)
 
 # Specify two ways to compile object files - one from assembly and one from C
 %.o : %.s
-	$(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
 %.o : %.c
-	$(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) $(INC) -c -o $@ $<
 
 .PHONY : install
 install : all
