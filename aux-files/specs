@@ -8,7 +8,7 @@
 %(cc1) -fno-exceptions -fno-rtti
 
 *link:
--L%:getenv(PREFIX /lib) -Tlnkscript --orphan-handling=error -gc-sections
+-L%:getenv(PREFIX /lib) --orphan-handling=error -gc-sections
 
 *libgcc:
 -lgcc
