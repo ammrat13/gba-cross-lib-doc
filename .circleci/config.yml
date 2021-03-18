@@ -1,0 +1,45 @@
+version: 2.1
+
+
+# The machine we'll run on
+# Just use base, since we do builds in docker anyway
+executors:
+  base_exec:
+    resource_class: small
+    docker:
+      - image: cimg/base:edge-20.04
+
+
+# Commands for logically separate tasks
+commands:
+
+  # Setup steps
+  # Checkout the code and startup docker
+  setup:
+    description: Setting up the environment
+    steps:
+      - checkout
+      - setup_remote_docker:
+          version: 20.10.2
+          docker_layer_caching: true
+      - run:
+          name: Login to docker
+          command: |
+            echo "${DOCKER_PASSWORD}" | \
+            docker login --username ammrat13 --password-stdin
+
+
+# The different jobs for the different phases
+jobs:
+
+  build:
+    executor: base_exec
+    steps:
+      - setup
+
+
+workflows:
+
+  build_test_deploy:
+    jobs:
+      - build
