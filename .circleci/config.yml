@@ -50,8 +50,15 @@ commands:
             docker push ammrat13/gba-toolchain:latest
 
 
-# The different jobs for the different phases
+# The different jobs for different branches
+# Again, we can't use Docker layer caching
 jobs:
+
+  build_test:
+    executor: base_exec
+    steps:
+      - setup
+      - build
 
   build_test_deploy:
     executor: base_exec
@@ -61,8 +68,20 @@ jobs:
       - deploy
 
 
+# A workflow that specifies the actions we need to take
+# Conditionally do different jobs depending on the branch
 workflows:
-
-  build_test_deploy:
+  do_actions:
     jobs:
-      - build_test_deploy
+
+      # Deploy if on master
+      - build_test_deploy:
+          filters:
+            branches:
+              only: master
+
+      # Otherwise, just build and test
+      - build_test:
+          filters:
+            branches:
+              ignore: master
