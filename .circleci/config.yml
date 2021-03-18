@@ -28,6 +28,27 @@ commands:
             echo "${DOCKER_PASSWORD}" | \
             docker login --username ammrat13 --password-stdin
 
+  # Build the image
+  build:
+    description: Build the Docker image
+    steps:
+      - run:
+          name: Build the Docker image
+          command: |
+            docker build \
+              --tag ammrat13/gba-toolchain:latest \
+              --file docker/gba-toolchain/Dockerfile \
+              .
+
+  # Push the image
+  deploy:
+    description: Push the Docker image
+    steps:
+      - run:
+          name: Push the Docker image
+          command: |
+            docker push ammrat13/gba-toolchain:latest
+
 
 # The different jobs for the different phases
 jobs:
@@ -36,6 +57,8 @@ jobs:
     executor: base_exec
     steps:
       - setup
+      - build
+      - deploy
 
 
 workflows:
