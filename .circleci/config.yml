@@ -40,6 +40,14 @@ commands:
               --file docker/gba-toolchain/Dockerfile \
               .
 
+  # Test the image
+  test:
+    description: Test the library
+    steps:
+      - run:
+          name: TODO
+          command: "true"
+
   # Push the image
   deploy:
     description: Push the Docker image
@@ -54,17 +62,23 @@ commands:
 # Again, we can't use Docker layer caching
 jobs:
 
+  # Job to only build and test
+  # For branches not master
   build_test:
     executor: base_exec
     steps:
       - setup
       - build
+      - test
 
+  # Job to build, test, and deploy
+  # Specifically for master
   build_test_deploy:
     executor: base_exec
     steps:
       - setup
       - build
+      - test
       - deploy
 
 
