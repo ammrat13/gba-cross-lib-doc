@@ -19,8 +19,8 @@ COPY aux-files/ .
 # We assume it's mounted at `/work/`
 WORKDIR /work/
 CMD [ "make", \
-      "PREFIX=/gba-lib", \
-      "HOST=", \
+      "PREFIX=/gba-lib/", \
+      "HOST=x86_64-pc-linux-gnu", \
       "TARGET=arm-none-eabi", \
-      "SPECS=/gba-lib/aux-files/specs", \
-      "LNKSCRIPT=/gba-lib/aux-files/lnkscript" ]
+      "SPECS=-specs=/gba-lib/aux-files/specs", \
+      "LNKSCRIPT=-T/gba-lib/aux-files/lnkscript" ]
