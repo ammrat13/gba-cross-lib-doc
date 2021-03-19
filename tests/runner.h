@@ -4,7 +4,7 @@
 
     A header file for the main test runner. It has forward declarations of all
     the functions returning suites, as well as a null-terminated list of all of
-    them for `main` to iterate over. It also includes the Check header.
+    them for `main` to iterate over. It also includes Check and stdio.
 */
 
 #ifndef RUNNER_H
@@ -15,7 +15,8 @@ extern "C" {
 #endif
 
 
-// Include Check
+// Include libraries
+#include <stdio.h>
 #include <check.h>
 
 

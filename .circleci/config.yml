@@ -65,11 +65,11 @@ commands:
       - run:
           name: Run tests
           command: |
-            mkdir -pv ~/test-results/check/
+            mkdir -pv ~/test-results/Check/
             docker exec --tty --workdir=/gba-lib/tests/ \
               gba-toolchain-test \
               ./tests.out \
-            | tap-xunit | tee ~/test-results/check/check.xml
+            | tap-xunit | tee ~/test-results/Check/Check.xml
       - run:
           name: Destroy testing container
           command: |
