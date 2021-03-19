@@ -2,12 +2,12 @@ version: 2.1
 
 
 # The machine we'll run on
-# Just use base, since we do builds in docker anyway
+# We use some npm tools, so we need node
 executors:
   base_exec:
     resource_class: small
     docker:
-      - image: cimg/base:edge-20.04
+      - image: cimg/node:current
 
 
 # Commands for logically separate tasks
@@ -41,10 +41,15 @@ commands:
               .
 
   # Test the image
+  # We need TAP-XUnit, so install it without root privileges
   # We don't have volumes, so we copied the tests in during the build
   test:
     description: Test the library
     steps:
+      - run:
+          name: Install TAP-XUnit
+          command: |
+            npm install --prefix=$HOME/ --global tap-xunit
       - run:
           name: Create testing container
           command: |
