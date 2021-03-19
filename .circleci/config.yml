@@ -64,6 +64,7 @@ commands:
             docker exec --tty --workdir=/gba-lib/tests/ \
               gba-toolchain-test \
               ./tests.out \
+            | sed -e '/^$/d' -e '${/Exited with code exit status /d}' \
             | tee ~/test-results/check/check.xml
       - run:
           name: Destroy testing container
