@@ -21,12 +21,6 @@ Suite *(*SUITE_FUNCS[])(void) = {
 
 int main(int argc, char **argv) {
 
-    // Check that we're given two arguments
-    if(argc != 2) {
-        printf("Usage: test.out out-file.xml");
-        return -1;
-    }
-
     // Set up a suite runner
     // Initially null - have to take care of in the loop
     SRunner *runner = NULL;
@@ -49,9 +43,9 @@ int main(int argc, char **argv) {
         return 0;
     }
 
-    // Setup logging with the command line parameter
-    srunner_set_xml(runner, argv[1]);
+    // Setup logging to stdout
+    srunner_set_xml(runner, "/dev/stdout");
     // Run and return
-    srunner_run_all(runner, CK_VERBOSE);
+    srunner_run_all(runner, CK_SILENT);
     return 0 != srunner_ntests_failed(runner);
 }

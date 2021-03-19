@@ -63,7 +63,7 @@ commands:
             mkdir -pv ~/test-results/
             docker exec --interactive --tty --workdir=/gba-lib/tests/ \
               gba-toolchain-test \
-              /bin/bash -c "./tests.out >(cat)" \
+              ./tests.out \
             | tee ~/test-results/check.xml
       - store_test_results:
           path: ~/test-results
