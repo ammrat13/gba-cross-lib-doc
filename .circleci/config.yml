@@ -2,12 +2,12 @@ version: 2.1
 
 
 # The machine we'll run on
-# Just use base, since we do builds in docker anyway
+# We use some npm tools, so we need node
 executors:
   base_exec:
     resource_class: small
     docker:
-      - image: cimg/base:edge-20.04
+      - image: cimg/node:current
 
 
 # Commands for logically separate tasks
@@ -41,12 +41,42 @@ commands:
               .
 
   # Test the image
+  # We need TAP-XUnit, so install it without root privileges
+  # We don't have volumes, so we copied the tests in during the build
   test:
     description: Test the library
     steps:
       - run:
-          name: TODO
-          command: "true"
+          name: Install TAP-XUnit
+          command: |
+            npm install --prefix=$HOME/ --global tap-xunit
+      - run:
+          name: Create testing container
+          command: |
+            docker run --detach --tty \
+              --name gba-toolchain-test ammrat13/gba-toolchain \
+              /bin/bash
+      - run:
+          name: Build tests
+          command: |
+            docker exec --tty --workdir=/gba-lib/tests/ \
+              gba-toolchain-test \
+              make PREFIX=/gba-lib/ HOST=x86_64-linux-gnu- TARGET=arm-none-eabi-
+      - run:
+          name: Run tests
+          command: |
+            mkdir -pv ~/test-results/Check/
+            docker exec --tty --workdir=/gba-lib/tests/ \
+              gba-toolchain-test \
+              ./tests.out \
+            | tap-xunit | tee ~/test-results/Check/Check.xml
+      - run:
+          name: Destroy testing container
+          command: |
+            docker stop gba-toolchain-test
+            docker rm gba-toolchain-test
+      - store_test_results:
+          path: ~/test-results/
 
   # Push the image
   deploy:
@@ -62,15 +92,6 @@ commands:
 # Again, we can't use Docker layer caching
 jobs:
 
-  # Job to only build and test
-  # For branches not master
-  build_test:
-    executor: base_exec
-    steps:
-      - setup
-      - build
-      - test
-
   # Job to build, test, and deploy
   # Specifically for master
   build_test_deploy:
@@ -80,6 +101,15 @@ jobs:
       - build
       - test
       - deploy
+
+  # Job to only build and test
+  # For branches not master
+  build_test:
+    executor: base_exec
+    steps:
+      - setup
+      - build
+      - test
 
 
 # A workflow that specifies the actions we need to take

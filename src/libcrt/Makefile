@@ -9,7 +9,7 @@
 
 # Sensitive to these environment variables
 PREFIX ?= $(HOME)/gba-cross-lib-doc
-TARGET ?= arm-agb-eabi
+TARGET ?= arm-agb-eabi-
 #PROGRAM_PREFIX ?= ""
 
 # Where to install
@@ -17,7 +17,7 @@ INSTALL_LIB_DIR := $(PREFIX)/lib
 INSTALL_INC_DIR := $(PREFIX)/include
 
 # Get all the programs
-CC := $(PROGRAM_PREFIX)$(TARGET)-gcc
+CC := $(PROGRAM_PREFIX)$(TARGET)gcc
 
 # Flags for compilation and linking
 CFLAGS := -v -O2

@@ -12,8 +12,9 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 # Update the repositories
 # Install the toolchain and emulator dependencies
+# Tap to XUnit needed for testing
 RUN apt-get update && \
-    apt-get install --yes build-essential check gcc-arm-none-eabi cmake git
+    apt-get install --yes build-essential gcc-arm-none-eabi check git cmake
 
 # Install mGBA
 # Not in the repositories, so have to do manually
