@@ -44,7 +44,7 @@ int main(int argc, char **argv) {
     }
 
     // Setup logging to stdout
-    srunner_set_xml(runner, "/dev/stdout");
+    srunner_set_tap(runner, "/dev/stdout");
     // Run and return
     srunner_run_all(runner, CK_SILENT);
     return 0 != srunner_ntests_failed(runner);

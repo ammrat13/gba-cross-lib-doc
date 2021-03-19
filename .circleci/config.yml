@@ -64,7 +64,7 @@ commands:
             docker exec --tty --workdir=/gba-lib/tests/ \
               gba-toolchain-test \
               ./tests.out \
-            | tee ~/test-results/check/check.xml
+            | tap-xunit | tee ~/test-results/check/check.xml
       - run:
           name: Destroy testing container
           command: |
