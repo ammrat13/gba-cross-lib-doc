@@ -20,7 +20,5 @@ COPY aux-files/ .
 WORKDIR /work/
 CMD [ "make", \
       "PREFIX=/gba-lib/", \
-      "HOST=x86_64-pc-linux-gnu-", \
-      "TARGET=arm-none-eabi-", \
-      "SPECS=-specs=/gba-lib/aux-files/specs", \
-      "LNKSCRIPT=-T/gba-lib/aux-files/lnkscript" ]
+      "HOST=x86_64-linux-gnu-", \
+      "TARGET=arm-none-eabi-" ]
