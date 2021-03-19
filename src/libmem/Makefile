@@ -6,7 +6,7 @@
 
 # Sensitive to these environment variables
 PREFIX ?= $(HOME)/gba-cross-lib-doc
-TARGET ?= arm-agb-eabi
+TARGET ?= arm-agb-eabi-
 #PROGRAM_PREFIX ?= ""
 
 # Where to install
@@ -14,8 +14,8 @@ INSTALL_LIB_DIR := $(PREFIX)/lib
 INSTALL_INC_DIR := $(PREFIX)/include
 
 # Get the locations for all the programs
-CC := $(PROGRAM_PREFIX)$(TARGET)-gcc
-AR := $(PROGRAM_PREFIX)$(TARGET)-ar
+CC := $(PROGRAM_PREFIX)$(TARGET)gcc
+AR := $(PROGRAM_PREFIX)$(TARGET)ar
 
 # Flags for compilation
 # We say no builtins because we're implementing them

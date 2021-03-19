@@ -8,7 +8,7 @@ WORKDIR /
 # Copy the source and build
 WORKDIR /gba-lib/src/
 COPY src/ .
-RUN PREFIX=/gba-lib TARGET=arm-none-eabi make install
+RUN PREFIX=/gba-lib TARGET=arm-none-eabi- make install
 
 # Copy the auxilary files
 WORKDIR /gba-lib/aux-files/
@@ -20,7 +20,7 @@ COPY aux-files/ .
 WORKDIR /work/
 CMD [ "make", \
       "PREFIX=/gba-lib/", \
-      "HOST=x86_64-pc-linux-gnu", \
-      "TARGET=arm-none-eabi", \
+      "HOST=x86_64-pc-linux-gnu-", \
+      "TARGET=arm-none-eabi-", \
       "SPECS=-specs=/gba-lib/aux-files/specs", \
       "LNKSCRIPT=-T/gba-lib/aux-files/lnkscript" ]
