@@ -60,10 +60,11 @@ commands:
       - run:
           name: Run tests
           command: |
+            mkdir -pv ~/test-results/
             docker exec --interactive --tty --workdir=/gba-lib/tests/ \
               gba-toolchain-test \
               /bin/bash -c "./tests.out >(cat)" \
-            > ~/test-results/check.xml
+            | tee ~/test-results/check.xml
       - store_test_results:
           path: ~/test-results
 
@@ -81,15 +82,6 @@ commands:
 # Again, we can't use Docker layer caching
 jobs:
 
-  # Job to only build and test
-  # For branches not master
-  build_test:
-    executor: base_exec
-    steps:
-      - setup
-      - build
-      - test
-
   # Job to build, test, and deploy
   # Specifically for master
   build_test_deploy:
@@ -99,6 +91,15 @@ jobs:
       - build
       - test
       - deploy
+
+  # Job to only build and test
+  # For branches not master
+  build_test:
+    executor: base_exec
+    steps:
+      - setup
+      - build
+      - test
 
 
 # A workflow that specifies the actions we need to take
