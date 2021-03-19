@@ -7,8 +7,7 @@
     then outputs the data as needed.
 */
 
-// Needed to make directory
-#include <sys/stat.h>
+#include<stdio.h>
 
 // Runner header
 #include "runner.h"
