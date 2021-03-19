@@ -48,9 +48,10 @@ commands:
       - run:
           name: Build tests
           command: |
+            echo $(pwd) && \
             docker run --rm --interactive --tty \
               --volume="$(pwd)/tests/:/work/" \
-              ammrat13/gba-toolchain
+              ammrat13/gba-toolchain:latest
       - run:
           name: Run tests
           command: |
