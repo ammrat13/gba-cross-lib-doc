@@ -60,14 +60,12 @@ commands:
       - run:
           name: Run tests
           command: |
-            mkdir -pv ~/test-results/
+            mkdir -pv ~/test-results/check/
             docker exec --interactive --tty --workdir=/gba-lib/tests/ \
               gba-toolchain-test \
               ./tests.out \
-            | tee ~/test-results/check.xml
+            | tee ~/test-results/check/check.xml
       - store_test_results:
-          path: ~/test-results/
-      - store_artifacts:
           path: ~/test-results/
 
   # Push the image
