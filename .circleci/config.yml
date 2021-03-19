@@ -48,8 +48,8 @@ commands:
       - run:
           name: Create testing container
           command: |
-            docker run --detach --tty --name gba-toolchain-test \
-              ammrat13/gba-toolchain \
+            docker run --detach --tty \
+              --name gba-toolchain-test ammrat13/gba-toolchain \
               /bin/bash
       - run:
           name: Build tests
@@ -65,6 +65,11 @@ commands:
               gba-toolchain-test \
               ./tests.out \
             | tee ~/test-results/check/check.xml
+      - run:
+          name: Destroy testing container
+          command: |
+            docker stop gba-toolchain-test
+            docker rm gba-toolchain-test
       - store_test_results:
           path: ~/test-results/
 
