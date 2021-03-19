@@ -48,30 +48,21 @@ commands:
       - run:
           name: Create testing container
           command: |
-            docker run -d \
-              --name gba-toolchain-test \
-              ammrat13/gba-toolchain
+            docker run --detach --tty --name gba-toolchain-test \
+              ammrat13/gba-toolchain \
+              /bin/bash
       - run:
           name: Build tests
           command: |
-            docker exec --interactive --tty \
-              --workdir=/gba-lib/tests/ \
-              gba-toolchain-test
+            docker exec --interactive --tty --workdir=/gba-lib/tests/ \
+              gba-toolchain-test \
+              make PREFIX=/gba-lib/ HOST=x86_64-linux-gnu- TARGET=arm-none-eabi-
       - run:
           name: Run tests
           command: |
-            docker exec --interactive --tty \
-              --workdir=/gba-lib/tests/ \
+            docker exec --interactive --tty --workdir=/gba-lib/tests/ \
               gba-toolchain-test \
-              ./tests.out
-      - run:
-          name: Get results
-          command: |
-            mkdir -p ~/test-results/ && \
-            docker exec --interactive --tty \
-              --workdir=/gba-lib/tests/ \
-              gba-toolchain-test \
-              cat ./check-output.xml \
+              /bin/bash -c "./tests.out >(cat)" \
             > ~/test-results/check.xml
       - store_test_results:
           path: ~/test-results
