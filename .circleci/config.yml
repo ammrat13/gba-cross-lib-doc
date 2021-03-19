@@ -41,22 +41,38 @@ commands:
               .
 
   # Test the image
-  # Results are stored in ~/test-results
+  # We don't have volumes, so we copied the tests in during the build
   test:
     description: Test the library
     steps:
       - run:
+          name: Create testing container
+          command: |
+            docker run -d \
+              --name gba-toolchain-test \
+              ammrat13/gba-toolchain
+      - run:
           name: Build tests
           command: |
-            echo $(pwd) && \
-            docker run --rm --interactive --tty \
-              --volume="$(pwd)/tests/:/work/" \
-              ammrat13/gba-toolchain:latest
+            docker exec --interactive --tty \
+              --workdir=/gba-lib/tests/ \
+              gba-toolchain-test
       - run:
           name: Run tests
           command: |
-            mkdir -pv ~/test-results && \
-            ./tests.out ~/test-results/check-output.xml
+            docker exec --interactive --tty \
+              --workdir=/gba-lib/tests/ \
+              gba-toolchain-test \
+              ./tests.out
+      - run:
+          name: Get results
+          command: |
+            mkdir -p ~/test-results/ && \
+            docker exec --interactive --tty \
+              --workdir=/gba-lib/tests/ \
+              gba-toolchain-test \
+              cat ./check-output.xml \
+            > ~/test-results/check.xml
       - store_test_results:
           path: ~/test-results
 
