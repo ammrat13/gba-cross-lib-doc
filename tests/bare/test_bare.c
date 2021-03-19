@@ -8,7 +8,7 @@
 #include "runner.h"
 
 START_TEST(do_test) {
-    ck_assert_int_eq(0,0);
+    ck_assert_int_eq(1,0);
 } END_TEST
 
 Suite *suite_bare(void) {
