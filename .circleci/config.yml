@@ -51,30 +51,19 @@ commands:
           command: |
             npm install --prefix=$HOME/ --global tap-xunit
       - run:
-          name: Create testing container
-          command: |
-            docker run --detach --tty \
-              --name gba-toolchain-test ammrat13/gba-toolchain \
-              /bin/bash
-      - run:
           name: Build tests
           command: |
-            docker exec --tty --workdir=/gba-lib/tests/ \
-              gba-toolchain-test \
-              make PREFIX=/gba-lib/ HOST=x86_64-linux-gnu- TARGET=arm-none-eabi-
+            docker build \
+              --tag ammrat13/gba-tests:latest \
+              --file docker/gba-tests/Dockerfile \
+              .
       - run:
           name: Run tests
           command: |
             mkdir -pv ~/test-results/Check/
-            docker exec --tty --workdir=/gba-lib/tests/ \
-              gba-toolchain-test \
-              ./tests.out \
+            docker run --rm --tty \
+              ammrat13/gba-tests:latest
             | tap-xunit | tee ~/test-results/Check/Check.xml
-      - run:
-          name: Destroy testing container
-          command: |
-            docker stop gba-toolchain-test
-            docker rm gba-toolchain-test
       - store_test_results:
           path: ~/test-results/
 
