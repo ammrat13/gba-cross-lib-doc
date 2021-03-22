@@ -29,10 +29,10 @@ TARGET_LIB := -L$(PREFIX)/lib
 TARGET_INC := -I$(PREFIX)/include
 
 # Files to build
-OBJFILES := runner.o \
-	bare/test_bare.o
+OBJFILES := runner.ho \
+	bare/test_bare.ho
 GBAFILES := \
-	bare/game_bare.gba
+	bare/game_bare.to
 # The name of out output executable
 OUTFILE := tests.out
 
@@ -43,17 +43,17 @@ all : $(OBJFILES) $(GBAFILES)
 	$(HOST_CC) $(HOST_LDFLAGS) -o $(OUTFILE) $(OBJFILES) $(HOST_LDLIBS)
 
 # Rule for host code
-%.o : %.c
+%.ho : %.c
 	$(HOST_CC) $(HOST_CFLAGS) $(HOST_INC) -c -o $@ $<
 
 # Rule for target code
-%.gba : %.c
+%.to : %.c
 	$(TARGET_CC) $(SPECS) $(LNKSCRIPT) \
 		$(TARGET_CFLAGS) $(TARGET_LIB) $(TARGET_INC) -o $@ $<
 
 # Rule to clean
 .PHONY : clean
 clean :
-	find . -type f -name '*.o' -delete -print
-	find . -type f -name '*.gba' -delete -print
+	find . -type f -name '*.ho' -delete -print
+	find . -type f -name '*.to' -delete -print
 	rm -rfv *.out
