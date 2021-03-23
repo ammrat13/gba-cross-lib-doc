@@ -2,7 +2,6 @@ version: 2.1
 
 
 # The machine we'll run on
-# We use some npm tools, so we need node
 executors:
   base_exec:
     resource_class: small
@@ -17,7 +16,7 @@ commands:
   # Setup steps
   # Checkout the code and startup docker
   setup:
-    description: Setting up the environment
+    description: Set up the environment
     steps:
       - checkout
       - setup_remote_docker:
@@ -25,8 +24,8 @@ commands:
       - run:
           name: Login to docker
           command: |
-            echo "${DOCKER_PASSWORD}" | \
-            docker login --username ammrat13 --password-stdin
+            echo "${DOCKER_PASSWORD}" \
+            | docker login --username ammrat13 --password-stdin
 
   # Build the image
   build:
@@ -37,26 +36,26 @@ commands:
           command: |
             docker build \
               --tag ammrat13/gba-toolchain:latest \
-              --file docker/gba-toolchain/Dockerfile \
+              --file docker/gba-toolchain.Dockerfile \
               .
 
   # Test the image
   test:
-    description: Test the library
+    description: Test the Docker image
     steps:
       - run:
-          name: Build tests
+          name: Build the tests
           command: |
             docker build \
-              --tag ammrat13/gba-tests:latest \
-              --file docker/gba-tests/Dockerfile \
+              --tag ammrat13/gba-toolchain-tests:latest \
+              --file docker/gba-toolchain-tests.Dockerfile \
               .
       - run:
-          name: Run tests
+          name: Run the tests
           command: |
             mkdir -pv ~/test-results/cmocka/
             docker run --rm --tty \
-              ammrat13/gba-tests:latest \
+              ammrat13/gba-toolchain-tests:latest \
             | tee ~/test-results/cmocka/cmocka.xml
       - store_test_results:
           path: ~/test-results/
