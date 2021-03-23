@@ -62,7 +62,7 @@ commands:
           command: |
             mkdir -pv ~/test-results/Check/
             docker run --rm --tty \
-              ammrat13/gba-tests:latest
+              ammrat13/gba-tests:latest \
             | tap-xunit | tee ~/test-results/Check/Check.xml
       - store_test_results:
           path: ~/test-results/
