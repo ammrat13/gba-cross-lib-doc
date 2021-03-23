@@ -5,7 +5,7 @@
 -I%:getenv(PREFIX /include) -mcpu=arm7tdmi -mthumb-interwork -ffreestanding
 
 *cc1plus:
-%(cc1) -fno-exceptions -fno-rtti
++ -fno-exceptions -fno-rtti
 
 *link:
 -L%:getenv(PREFIX /lib) --orphan-handling=error -gc-sections
@@ -20,3 +20,5 @@
 -l:crt0.o -l:crti.o
 
 *endfile:
+
+

@@ -7,26 +7,18 @@
 
 #include "runner.h"
 
-INIT_FILE(bare);
-
 
 // A test that always passes
-START_TEST(do_test) {
-    ck_assert_int_eq(0,0);
-} END_TEST
+static int always_pass(void **state) {
+
+}
 
 
-// Return the suite to run
-Suite *suite_bare(void) {
-    // Setup
-    Suite *ret = suite_create("bare");
-    TCase *cas = tcase_create("do_test");
-    tcase_add_unchecked_fixture(cas, bare_print, NULL);
-
-    // Add tests
-    tcase_add_test(cas, do_test);
-
-    // Return
-    suite_add_tcase(ret, cas);
-    return ret;
+// The suite to run
+static const struct CMUnitTest suite[] = {
+    cmocka_unit_test(always_pass),
+};
+// Run the tests
+int run_bare(void) {
+    return cmocka_run_group_tests_name("bare", suite, NULL, NULL);
 }
