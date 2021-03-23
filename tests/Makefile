@@ -21,7 +21,7 @@ LNKSCRIPT := -T$(PREFIX)/aux-files/lnkscript
 # Flags for compilation and linking and the host
 HOST_CFLAGS := -v -O2 -g
 HOST_LDFLAGS := -v -g
-HOST_LDLIBS := -lcheck -lmgba
+HOST_LDLIBS := -lcmocka -lmgba
 HOST_INC := -I$(shell pwd)
 # Flags for compilation and linking and the target
 TARGET_CFLAGS := -v -O2

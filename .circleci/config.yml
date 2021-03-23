@@ -7,7 +7,7 @@ executors:
   base_exec:
     resource_class: small
     docker:
-      - image: cimg/node:current
+      - image: cimg/base:current
 
 
 # Commands for logically separate tasks
@@ -41,15 +41,9 @@ commands:
               .
 
   # Test the image
-  # We need TAP-XUnit, so install it without root privileges
-  # We don't have volumes, so we copied the tests in during the build
   test:
     description: Test the library
     steps:
-      - run:
-          name: Install TAP-XUnit
-          command: |
-            npm install --prefix=$HOME/ --global tap-xunit
       - run:
           name: Build tests
           command: |
@@ -60,10 +54,10 @@ commands:
       - run:
           name: Run tests
           command: |
-            mkdir -pv ~/test-results/Check/
+            mkdir -pv ~/test-results/cmocka/
             docker run --rm --tty \
               ammrat13/gba-tests:latest \
-            | tap-xunit | tee ~/test-results/Check/Check.xml
+            | tee ~/test-results/cmocka/cmocka.xml
       - store_test_results:
           path: ~/test-results/
 

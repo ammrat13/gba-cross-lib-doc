@@ -4,7 +4,7 @@ FROM alpine:3.13
 
 
 # Install build packages
-RUN apk add --no-cache make gcc g++ libc-dev check-dev
+RUN apk add --no-cache make gcc g++ libc-dev cmocka-dev
 # Install the cross compiler
 # Need unstable repositories for this
 RUN apk add --no-cache --repository https://dl-cdn.alpinelinux.org/alpine/edge/testing gcc-arm-none-eabi
