@@ -14,17 +14,18 @@ TARGET ?= arm-agb-eabi-
 # Get the locations for all the programs
 HOST_CC := $(HOST_PROGRAM_PREFIX)$(HOST)gcc
 TARGET_CC := $(TARGET_PROGRAM_PREFIX)$(TARGET)gcc
+TARGET_OBJCOPY := $(TARGET_PROGRAM_PREFIX)$(TARGET)objcopy
 # As well as locations for auxilary files
 SPECS := -specs=$(PREFIX)/aux-files/specs
 LNKSCRIPT := -T$(PREFIX)/aux-files/lnkscript
 
 # Flags for compilation and linking and the host
-HOST_CFLAGS := -v -O2 -g
+HOST_CFLAGS := -v -O2 -Wall -Werror -DMGBA_STANDALONE
 HOST_LDFLAGS := -v -g
 HOST_LDLIBS := -lcmocka -lmgba
 HOST_INC := -I$(shell pwd)
 # Flags for compilation and linking and the target
-TARGET_CFLAGS := -v -O2
+TARGET_CFLAGS := -v -O2 -Wall -Werror
 TARGET_LIB := -L$(PREFIX)/lib
 TARGET_INC := -I$(PREFIX)/include
 
@@ -32,7 +33,7 @@ TARGET_INC := -I$(PREFIX)/include
 OBJFILES := runner.ho \
 	bare/test_bare.ho
 GBAFILES := \
-	bare/game_bare.to
+	bare/game_bare.thex
 # The name of out output executable
 OUTFILE := tests.out
 
@@ -47,9 +48,10 @@ all : $(OBJFILES) $(GBAFILES)
 	$(HOST_CC) $(HOST_CFLAGS) $(HOST_INC) -c -o $@ $<
 
 # Rule for target code
-%.to : %.c
+%.thex : %.c
 	$(TARGET_CC) $(SPECS) $(LNKSCRIPT) \
-		$(TARGET_CFLAGS) $(TARGET_LIB) $(TARGET_INC) -o $@ $<
+		$(TARGET_CFLAGS) $(TARGET_LIB) $(TARGET_INC) -o $*.to $<
+	$(TARGET_OBJCOPY) -O binary $*.to $@
 
 # Rule to clean
 .PHONY : clean
