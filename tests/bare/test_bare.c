@@ -10,7 +10,7 @@
 
 // Include mGBA libraries
 #include <mgba/core/core.h>
-#include <mgba/core/log.h>
+#include <mgba/core/interface.h>
 // Include our own libraries
 #include "runner.h"
 
@@ -40,6 +40,14 @@ static int setup_core(void **state) {
     // Get video buffer dimensions
     unsigned int vW, vH;
     c->desiredVideoDimensions(c, &vW, &vH);
+    // Check we got the right dimensions
+    if(vW != 240 || vH != 160) {
+        // Remember to destroy the core
+        c->deinit(c);
+        // Fail
+        fail_msg("Incorrect video dimensions");
+    }
+
     // Allocate the video buffer
     color_t *vB = malloc(vH * vW * BYTES_PER_PIXEL);
     if(vB == NULL) {
@@ -108,14 +116,29 @@ static void test_display(void **state) {
 
     // Reset the core
     c->reset(c);
-    // Step it for some time
-    for(uint32_t i = 0; i < 1000; i++) {
-        c->step(c);
+    // Run for a few frames to let the initialization complete
+    // Three frames seems to be the minimum
+    for(uint32_t i = 0; i < 3; i++) {
+        c->runFrame(c);
     }
 
     // Check that the video buffer has the right contents
     for(unsigned int i = 0; i < s->videoHeight * s->videoWidth; i++) {
-        assert_int_equal(s->videoBuffer[i], 0);
+        // Check for special values
+        switch(i) {
+            case 120+80*240:
+                assert_int_equal(s->videoBuffer[i] & 0xffffff, 0x0000ff);
+                break;
+            case 136+80*240:
+                assert_int_equal(s->videoBuffer[i] & 0xffffff, 0x00ff00);
+                break;
+            case 120+96*240:
+                assert_int_equal(s->videoBuffer[i] & 0xffffff, 0xff0000);
+                break;
+            default:
+                assert_int_equal(s->videoBuffer[i] & 0xffffff, 0);
+                break;
+        }
     }
 }
 

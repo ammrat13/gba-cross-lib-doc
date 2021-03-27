@@ -20,7 +20,7 @@ SPECS := -specs=$(PREFIX)/aux-files/specs
 LNKSCRIPT := -T$(PREFIX)/aux-files/lnkscript
 
 # Flags for compilation and linking and the host
-HOST_CFLAGS := -v -g -O2 -Wall -Werror -DMGBA_STANDALONE
+HOST_CFLAGS := -v -g -O2 -Wall -Werror -DMGBA_STANDALONE -UCOLOR_16_BIT
 HOST_LDFLAGS := -v
 HOST_LDLIBS := -lcmocka -lmgba
 HOST_INC := -I$(shell pwd)/
