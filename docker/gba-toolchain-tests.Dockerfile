@@ -6,9 +6,14 @@ FROM ammrat13/gba-toolchain:latest
 ARG CI=
 
 # Environment variables for tests
-# Use a hack to do if-else on CI
-ENV CMOCKA_MESSAGE_OUTPUT=${CI:+XML}${CI:-STDOUT}
-ENV CMOCKA_XML_FILE=/dev/stdout
+# Do if-else on CI
+ENV CMOCKA_MESSAGE_OUTPUT=${CI:+XML} CMOCKA_XML_FILE=/dev/stdout
+
+# Add software for local testing
+RUN \
+    if [[ -z "${CI}" ]]; then \
+        apk add gdb valgrind; \
+    fi
 
 # Copy our tests into the working directory and compile them
 COPY tests/ /work
