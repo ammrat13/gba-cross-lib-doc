@@ -24,15 +24,6 @@ extern "C" {
 // Silent logger to pass to mGBA
 extern struct mLogger silent_logger;
 
-// Silent logging function used by the silent logger
-void silent_log(
-    struct mLogger* logger,
-    int category,
-    enum mLogLevel level,
-    const char *format,
-    va_list args
-);
-
 
 #ifdef __cplusplus
 } // extern "C"

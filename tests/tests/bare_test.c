@@ -8,9 +8,7 @@
     For this file, the `state` is an `state_t**`
 */
 
-// Include mGBA libraries
-#include <mgba/core/core.h>
-// Include our libraries
+// Include libraries
 #include "lib.h"
 
 
