@@ -10,7 +10,7 @@
 #include "runner.h"
 
 // Needed for logging
-#include "silent_log.h"
+#include "utils/silent_log.h"
 
 
 group_test_run_t *GROUP_TEST_RUNS[] = {

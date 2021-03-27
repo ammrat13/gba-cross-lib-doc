@@ -12,6 +12,11 @@ TARGET ?= arm-agb-eabi-
 #TARGET_PROGRAM_PREFIX ?=
 #CI ?=
 
+
+# Get the root directory of this makefile
+# See: https://stackoverflow.com/questions/18136918/how-to-get-current-relative-directory-of-your-makefile
+ROOT_DIR := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
+
 # Get the locations for all the programs
 HOST_CC := $(HOST_PROGRAM_PREFIX)$(HOST)gcc
 TARGET_CC := $(TARGET_PROGRAM_PREFIX)$(TARGET)gcc
@@ -26,17 +31,18 @@ HOST_CFLAGS := -v -g -O2 -Wall -Werror
 HOST_CDEFS := -DMGBA_STANDALONE -UCOLOR_16_BIT
 HOST_LDFLAGS := -v
 HOST_LDLIBS := -lcmocka -lmgba
-HOST_INC := -I$(shell pwd)/
+HOST_INC := -I$(ROOT_DIR)/
 # Flags for compilation and linking and the target
 TARGET_CFLAGS := -v -O2 -Wall -Werror
 TARGET_LIB := -L$(PREFIX)/lib
 TARGET_INC := -I$(PREFIX)/include
 
 # Files to build
-OBJFILES := runner.hobj silent_log.hobj \
-	bare/test_bare.hobj
+OBJFILES := runner.hobj \
+	utils/silent_log.hobj \
+	tests/bare_test.hobj
 GBAFILES := \
-	bare/game_bare.thex
+	tests/bare_game.thex
 # The name of out output executable
 OUTFILE := tests.out
 

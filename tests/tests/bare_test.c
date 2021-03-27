@@ -29,7 +29,7 @@ typedef struct state_t {
 static int setup_core(void **state) {
 
     // Create the core
-    struct mCore *c = mCoreFind("bare/game_bare.thex");
+    struct mCore *c = mCoreFind("tests/bare_game.thex");
     if(c == NULL) {
         fail_msg("Failed to allocate GBA core");
     }
@@ -63,7 +63,7 @@ static int setup_core(void **state) {
     mCoreConfigSetValue(&c->config, "idleOptimization", "ignore");
 
     // Actually load the file
-    mCoreLoadFile(c, "bare/game_bare.thex");
+    mCoreLoadFile(c, "tests/bare_game.thex");
 
 
     // Create the state structure
