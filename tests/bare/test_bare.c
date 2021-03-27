@@ -43,7 +43,9 @@ static int setup_core(void **state) {
     // Allocate the video buffer
     color_t *vB = malloc(vH * vW * BYTES_PER_PIXEL);
     if(vB == NULL) {
+        // Remember to destroy the core
         c->deinit(c);
+        // Fail
         fail_msg("Failed to allocate video buffer");
     }
     // Initialize the video buffer
@@ -61,8 +63,12 @@ static int setup_core(void **state) {
     // Free everything on failure
     state_t *s = malloc(sizeof(state_t));
     if(s == NULL) {
+        // Destroy the core and its configuration
         mCoreConfigDeinit(&c->config);
         c->deinit(c);
+        // Destroy the video buffer
+        free(vB);
+        // Fail
         fail_msg("Failed to allocate state");
     }
     // Initialize the state
@@ -75,6 +81,24 @@ static int setup_core(void **state) {
     return 0;
 }
 
+// Delete the core
+static int teardown_core(void **state) {
+
+    // Get the state and core
+    state_t *s = *state;
+    struct mCore *c = s->core;
+
+    // Free mGBA stuff
+    mCoreConfigDeinit(&c->config);
+    c->deinit(c);
+    // Free the state
+    free(s->videoBuffer);
+    free(s);
+
+    return 0;
+}
+
+
 // Check that the display is correct
 static void test_display(void **state) {
 
@@ -85,7 +109,7 @@ static void test_display(void **state) {
     // Reset the core
     c->reset(c);
     // Step it for some time
-    for(int i = 0; i < 1000; i++) {
+    for(uint32_t i = 0; i < 1000; i++) {
         c->step(c);
     }
 
@@ -98,7 +122,7 @@ static void test_display(void **state) {
 
 // The suite to run
 static const struct CMUnitTest suite[] = {
-    cmocka_unit_test_setup(test_display, setup_core),
+    cmocka_unit_test_setup_teardown(test_display, setup_core, teardown_core),
 };
 // Run the tests
 int run_bare(void) {
