@@ -8,10 +8,11 @@
     For this file, the `state` is an `state_t**`
 */
 
-#include "runner.h"
-
 // Include mGBA libraries
 #include <mgba/core/core.h>
+#include <mgba/core/log.h>
+// Include our own libraries
+#include "runner.h"
 
 
 // Define the state type
@@ -28,41 +29,48 @@ typedef struct state_t {
 // Setup the core
 static int setup_core(void **state) {
 
-    // Create the state structure
-    state_t *s = malloc(sizeof(state_t));
-    if(s == NULL) {
-        fail_msg("Failed to allocate state");
-    }
-
     // Create the core
-    s->core = mCoreFind("bare/game_bare.thex");
-    if(s->core == NULL) {
-        free(s);
+    struct mCore *c = mCoreFind("bare/game_bare.thex");
+    if(c == NULL) {
         fail_msg("Failed to allocate GBA core");
     }
     // Initialize it
-    s->core->init(s->core);
+    c->init(c);
 
     // Get video buffer dimensions
-    s->core->desiredVideoDimensions(s->core, &s->videoWidth, &s->videoHeight);
+    unsigned int vW, vH;
+    c->desiredVideoDimensions(c, &vW, &vH);
     // Allocate the video buffer
-    s->videoBuffer = malloc(s->videoHeight * s->videoWidth * BYTES_PER_PIXEL);
-    if(s->videoBuffer == NULL) {
-        free(s->core);
-        free(s);
+    color_t *vB = malloc(vH * vW * BYTES_PER_PIXEL);
+    if(vB == NULL) {
+        c->deinit(c);
         fail_msg("Failed to allocate video buffer");
     }
     // Initialize the video buffer
-    s->core->setVideoBuffer(s->core, s->videoBuffer, s->videoWidth);
+    c->setVideoBuffer(c, vB, vW);
 
     // Configure the core
-    mCoreConfigInit(&s->core->config, NULL);
-    mCoreConfigSetValue(&s->core->config, "idleOptimization", "ignore");
+    mCoreConfigInit(&c->config, NULL);
+    mCoreConfigSetValue(&c->config, "idleOptimization", "ignore");
 
     // Actually load the file
-    mCoreLoadFile(s->core, "bare/game_bare.thex");
+    mCoreLoadFile(c, "bare/game_bare.thex");
 
-    // Return the data
+
+    // Create the state structure
+    // Free everything on failure
+    state_t *s = malloc(sizeof(state_t));
+    if(s == NULL) {
+        mCoreConfigDeinit(&c->config);
+        c->deinit(c);
+        fail_msg("Failed to allocate state");
+    }
+    // Initialize the state
+    s->core = c;
+    s->videoWidth = vW;
+    s->videoHeight = vH;
+    s->videoBuffer = vB;
+    // Return
     *state = s;
     return 0;
 }
@@ -70,14 +78,15 @@ static int setup_core(void **state) {
 // Check that the display is correct
 static void test_display(void **state) {
 
-    // Get the state
+    // Get the state and core
     state_t *s = *state;
+    struct mCore *c = s->core;
 
     // Reset the core
-    s->core->reset(s->core);
+    c->reset(c);
     // Step it for some time
     for(int i = 0; i < 1000; i++) {
-        s->core->step(s->core);
+        c->step(c);
     }
 
     // Check that the video buffer has the right contents

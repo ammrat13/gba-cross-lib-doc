@@ -30,7 +30,7 @@ TARGET_LIB := -L$(PREFIX)/lib
 TARGET_INC := -I$(PREFIX)/include
 
 # Files to build
-OBJFILES := runner.hobj \
+OBJFILES := runner.hobj silent_log.hobj \
 	bare/test_bare.hobj
 GBAFILES := \
 	bare/game_bare.thex

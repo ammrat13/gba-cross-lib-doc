@@ -29,7 +29,7 @@ extern "C" {
 typedef int group_test_run_t(void);
 
 // Forward declarations of all the group test functions
-group_test_run_t run_bare;
+extern group_test_run_t run_bare;
 
 // A null-terminated list of all those functions
 // Defined in `runner.c`
