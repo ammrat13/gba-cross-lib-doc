@@ -10,8 +10,8 @@
 
 // Include mGBA libraries
 #include <mgba/core/core.h>
-// Include our own libraries
-#include "runner.h"
+// Include our libraries
+#include "lib.h"
 
 
 // Define the state type
