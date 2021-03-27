@@ -30,6 +30,7 @@ extern "C" {
 
 // Our own libraries
 #include "utils/silent_log.h"
+#include "utils/gba_test_core.h"
 
 
 #ifdef __cplusplus

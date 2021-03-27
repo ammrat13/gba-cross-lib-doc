@@ -28,7 +28,7 @@ LNKSCRIPT := -T$(PREFIX)/aux-files/lnkscript
 # Flags for compilation and linking and the host
 # Some extra defines are needed to compile mGBA headers
 HOST_CFLAGS := -v -g -O2 -Wall -Werror
-HOST_CDEFS := -DMGBA_STANDALONE -UCOLOR_16_BIT
+HOST_CDEFS := -DM_CORE_GBA -DMGBA_STANDALONE -UCOLOR_16_BIT
 HOST_LDFLAGS := -v
 HOST_LDLIBS := -lcmocka -lmgba
 HOST_INC := -I$(ROOT_DIR)/
@@ -38,8 +38,7 @@ TARGET_LIB := -L$(PREFIX)/lib
 TARGET_INC := -I$(PREFIX)/include
 
 # Files to build
-OBJFILES := runner.hobj \
-	utils/silent_log.hobj \
+OBJFILES := runner.hobj utils/silent_log.hobj utils/gba_test_core.hobj \
 	tests/bare_test.hobj
 GBAFILES := \
 	tests/bare_game.thex
