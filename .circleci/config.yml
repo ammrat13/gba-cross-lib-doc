@@ -49,11 +49,12 @@ commands:
             docker build \
               --tag ammrat13/gba-toolchain-tests:latest \
               --file docker/gba-toolchain-tests.Dockerfile \
+              --build-arg CI=true \
               .
       - run:
           name: Run the tests
           command: |
-            mkdir -pv ~/test-results/cmocka/
+            mkdir -p ~/test-results/cmocka/
             docker run --rm --tty \
               ammrat13/gba-toolchain-tests:latest \
             | tee ~/test-results/cmocka/cmocka.xml

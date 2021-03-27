@@ -8,8 +8,9 @@
 PREFIX ?= $(HOME)/gba-cross-lib-doc
 HOST ?= x86_64-pc-linux-gnu-
 TARGET ?= arm-agb-eabi-
-#HOST_PROGRAM_PREFIX ?= ""
-#TARGET_PROGRAM_PREFIX ?= ""
+#HOST_PROGRAM_PREFIX ?=
+#TARGET_PROGRAM_PREFIX ?=
+#CI ?=
 
 # Get the locations for all the programs
 HOST_CC := $(HOST_PROGRAM_PREFIX)$(HOST)gcc
@@ -20,7 +21,9 @@ SPECS := -specs=$(PREFIX)/aux-files/specs
 LNKSCRIPT := -T$(PREFIX)/aux-files/lnkscript
 
 # Flags for compilation and linking and the host
-HOST_CFLAGS := -v -g -O2 -Wall -Werror -DMGBA_STANDALONE -UCOLOR_16_BIT
+# Some extra defines are needed to compile mGBA headers
+HOST_CFLAGS := -v -g -O2 -Wall -Werror
+HOST_CDEFS := -DMGBA_STANDALONE -UCOLOR_16_BIT
 HOST_LDFLAGS := -v
 HOST_LDLIBS := -lcmocka -lmgba
 HOST_INC := -I$(shell pwd)/
@@ -48,7 +51,7 @@ all : $(OBJFILES) $(GBAFILES)
 
 # Rule for host code
 %.hobj : %.c
-	$(HOST_CC) $(HOST_CFLAGS) $(HOST_INC) -c -o $@ $<
+	$(HOST_CC) $(HOST_CFLAGS) $(HOST_CDEFS) $(HOST_INC) -c -o $@ $<
 
 # Rule for target code
 %.thex : %.tobj
