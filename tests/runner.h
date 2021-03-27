@@ -5,7 +5,7 @@
     A header file for the main test runner. It has forward declarations for all
     the group test functions to call for unit testing, as well as a declaration
     for a null-terminated array of all of them. This header also includes cmocka
-    (and its required headers) and stdio.
+    (and its required headers), stdio, and stdint.
 */
 
 #ifndef RUNNER_H
@@ -18,6 +18,7 @@ extern "C" {
 
 // Include libraries
 #include <stdio.h>
+#include <stdint.h>
 #include <stdarg.h>
 #include <stddef.h>
 #include <setjmp.h>
@@ -29,7 +30,7 @@ extern "C" {
 typedef int group_test_run_t(void);
 
 // Forward declarations of all the group test functions
-group_test_run_t run_bare;
+extern group_test_run_t run_bare;
 
 // A null-terminated list of all those functions
 // Defined in `runner.c`

@@ -9,6 +9,9 @@
 // Runner header
 #include "runner.h"
 
+// Needed for logging
+#include "silent_log.h"
+
 
 group_test_run_t *GROUP_TEST_RUNS[] = {
     run_bare,
@@ -17,6 +20,9 @@ group_test_run_t *GROUP_TEST_RUNS[] = {
 
 
 int main(void) {
+
+    // Disable mGBA logging to STDOUT
+    mLogSetDefaultLogger(&silent_logger);
 
     // Keep track of how many failures we've had
     int failures = 0;
