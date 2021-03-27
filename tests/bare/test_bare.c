@@ -10,7 +10,6 @@
 
 // Include mGBA libraries
 #include <mgba/core/core.h>
-#include <mgba/core/interface.h>
 // Include our own libraries
 #include "runner.h"
 
