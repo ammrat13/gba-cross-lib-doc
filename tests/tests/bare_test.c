@@ -53,10 +53,10 @@ static void test_display(void **state) {
             uint32_t actual = mgba_color_to_rgb(tc->video_buffer[r][c]);
 
             // Check for equality
-            if(expected != actual) {
+            if(expected == actual) {
                 fail_msg(
                     "Expected color 0x%06x instead of 0x%06x\n"
-                    "At row %d column %d",
+                    "At row %zu column %zu",
                     expected, actual, r, c);
             }
         }

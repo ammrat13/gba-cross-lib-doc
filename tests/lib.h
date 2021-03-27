@@ -32,6 +32,9 @@ extern "C" {
 #include "utils/silent_log.h"
 #include "utils/gba_test_core.h"
 
+// Bugfixes
+#include "utils/cmocka_fail_msg_bugfix.h"
+
 
 #ifdef __cplusplus
 } // extern "C"
