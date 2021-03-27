@@ -8,14 +8,8 @@
 #include "silent_log.h"
 
 
-// Define the logger
-struct mLogger silent_logger = {
-    .log = silent_log,
-    .filter = NULL,
-};
-
 // Define the log function
-void silent_log(
+static void silent_log(
     struct mLogger* logger,
     int category,
     enum mLogLevel level,
@@ -24,3 +18,9 @@ void silent_log(
 ) {
     /* Do nothing */
 }
+
+// Define the logger
+struct mLogger silent_logger = {
+    .log = silent_log,
+    .filter = NULL,
+};
