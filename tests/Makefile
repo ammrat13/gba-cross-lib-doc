@@ -38,6 +38,9 @@ GBAFILES := \
 OUTFILE := tests.out
 
 
+# Don't delete `.tobj` files
+.SECONDARY :
+
 # Do the linking at the very end
 .PHONY : all
 all : $(OBJFILES) $(GBAFILES)
@@ -57,6 +60,7 @@ all : $(OBJFILES) $(GBAFILES)
 # Rule to clean
 .PHONY : clean
 clean :
-	find . -type f -name '*.ho' -delete -print
-	find . -type f -name '*.to' -delete -print
+	find . -type f -name '*.hobj' -delete -print
+	find . -type f -name '*.tobj' -delete -print
+	find . -type f -name '*.thex' -delete -print
 	rm -rfv *.out
