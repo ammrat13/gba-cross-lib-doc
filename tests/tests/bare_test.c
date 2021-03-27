@@ -1,5 +1,5 @@
 /**
-    test_bare.c
+    bare_test.c
     By: Ammar Ratnani
 
     Check that `game_bare.c` gives the right output to the screen. Should be
