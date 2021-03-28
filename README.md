@@ -45,8 +45,14 @@ $ make && make install
 ```
 
 ### GCC
-Change into the source code's directory, make a build subdirectory, and `cd`
-into it. Then
+Change into the source code's directory. GCC requires GMP, MPC, and MPFR as
+dependencies, so extract them as
+```
+$ tar xvf ../gmp-v.v.v.tar.xz && mv -v gmp-v.v.v gmp
+$ tar xvf ../mpc-v.v.v.tar.xz && mv -v mpc-v.v.v mpc
+$ tar xvf ../mpfr-v.v.v.tar.xz && mv -v mpfr-v.v.v mpfr
+```
+Then, make a build subdirectory and `cd` into it. Then
 ```
 $ ../configure \
     --prefix=$PREFIX/toolchain --target=$TARGET --program-prefix=$TARGET- \
