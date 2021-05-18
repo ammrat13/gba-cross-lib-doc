@@ -1,12 +1,13 @@
 # Use Alpine for this image
-# We need edge since it has the required packages
+# We need 3.13 since edge on Docker fails on Ubuntu
+# See: https://wiki.alpinelinux.org/wiki/Draft_Release_Notes_for_Alpine_3.14.0
 FROM alpine:3.13
 
 
 # Install build packages
 RUN apk add --no-cache make gcc g++ libc-dev cmocka-dev
 # Install the cross compiler
-# Need unstable repositories for this
+# Need edge repositories for this
 RUN apk add --no-cache --repository https://dl-cdn.alpinelinux.org/alpine/edge/community gcc-arm-none-eabi
 
 # Install mGBA
