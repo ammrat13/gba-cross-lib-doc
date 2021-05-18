@@ -1,14 +1,14 @@
 *asm:
--mthumb-interwork
+
 
 *cc1:
--I%:getenv(PREFIX /include) -mcpu=arm7tdmi -mthumb-interwork -ffreestanding
+-I%:getenv(PREFIX /include) -mcpu=arm7tdmi -ffreestanding
 
 *cc1plus:
 + -fno-exceptions -fno-rtti
 
 *link:
--L%:getenv(PREFIX /lib) --orphan-handling=error -gc-sections
+-L%:getenv(PREFIX /lib) --orphan-handling=error
 
 *libgcc:
 -lgcc
