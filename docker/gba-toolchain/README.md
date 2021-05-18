@@ -11,8 +11,8 @@ It also sets up the default command for building games. It assumes the source
 tree is mounted at `/work/` in the container, and it will run `make` with the
 following variable overrides:
 * `PREFIX`: The root of the newly installed GBA toolchain. Set to `/gba-lib/`.
-* `HOST`: The program prefix of the host compiler, with the trailing dash.
-  Set to empty.
+* `HOST`: The program prefix of the host compiler, with the trailing dash. Set
+  to empty.
 * `TARGET`: The program prefix of the cross compiler, with the trailing dash.
   Set to `arm-none-eabi-`.
 * `SPECS`: The option to set the GCC specs file during cross compilation. Set to
