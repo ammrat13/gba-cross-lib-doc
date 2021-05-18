@@ -17,7 +17,12 @@ RUN \
 
 # Copy our tests into the working directory and compile them
 COPY tests/ /work
-RUN make
+RUN make \
+    PREFIX=${PREFIX} \
+    HOST=${HOST} \
+    TARGET=${TARGET} \
+    SPECS=${SPECS} \
+    LNKSCRIPT=${LNKSCRIPT}
 
 # Default command is to run the tests
 CMD [ "./tests.out" ]

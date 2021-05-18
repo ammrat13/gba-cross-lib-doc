@@ -25,4 +25,9 @@ COPY aux-files/ .
 # Set the command to build the game
 # We assume it's mounted at `/work/`
 WORKDIR /work/
-CMD [ "make" ]
+CMD make \
+    PREFIX=${PREFIX} \
+    HOST=${HOST} \
+    TARGET=${TARGET} \
+    SPECS=${SPECS} \
+    LNKSCRIPT=${LNKSCRIPT}
