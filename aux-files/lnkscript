@@ -2,8 +2,7 @@
     lnkscript
     By: Ammar Ratnani
 
-    A simple linker script for GBA games. Note that it doesn't handle
-    constructors in C or C++.
+    A simple linker script for GBA games.
 */
 
 ENTRY(_start)

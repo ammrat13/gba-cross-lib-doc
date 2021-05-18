@@ -36,6 +36,6 @@ For `.bss`:
 * `__bss_vma_stt`: Its desired starting address in *RAM*
 * `__bss_vma_end`: Its desired address just past the end in *RAM*
 
-And for `.init_array`:
+For `.init_array`:
 * `__init_arr_stt`: The address of the first element
 * `__init_arr_end`: The address just past the end
