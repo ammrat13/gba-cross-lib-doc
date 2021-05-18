@@ -64,19 +64,19 @@ SECTIONS {
 
 
     /* Read-only data stays in the ROM */
-    .rodata : ALIGN(0x4) { *(.rodata) } >crom
+    .rodata : ALIGN(0x4) { *(.rodata*) } >crom
 
 
     /* We will copy .data into IWRAM from the ROM */
-    .data : ALIGN(0x4){ *(.data) } >iwram AT>crom
+    .data : ALIGN(0x4){ *(.data*) } >iwram AT>crom
 
     /* The .bss section is also in IWRAM, but we don't need to put it in the
         ROM image since it's initially zeroed out */
     /* We also take the recommendation to put COMMON in .bss */
-    .bss (NOLOAD) : ALIGN(0x4) { *(.bss) *(COMMON) } >iwram
+    .bss (NOLOAD) : ALIGN(0x4) { *(.bss*) *(COMMON) } >iwram
 
     /* The .noinit section is just like .bss except it isn't zeroed */
-    .noinit (NOLOAD) : ALIGN(0x4) { *(.noinit) } >iwram
+    .noinit (NOLOAD) : ALIGN(0x4) { *(.noinit*) } >iwram
 
     /* Again, define symbols to pass to our loader */
     __data_vma_stt = ADDR(.data);

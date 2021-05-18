@@ -33,7 +33,8 @@ HOST_LDFLAGS := -v
 HOST_LDLIBS := -lcmocka -lmgba
 HOST_INC := -I$(ROOT_DIR)/
 # Flags for compilation and linking and the target
-TARGET_CFLAGS := -v -O2 -Wall -Werror
+TARGET_CFLAGS := -ffunction-sections -fdata-sections -v -Os -Wall -Werror
+TARGET_LDFLAGS := -v -Wl,-gc-sections
 TARGET_LIB := -L$(PREFIX)/lib
 TARGET_INC := -I$(PREFIX)/include
 
@@ -63,7 +64,7 @@ all : $(OBJFILES) $(GBAFILES)
 	$(TARGET_OBJCOPY) -O binary $< $@
 %.tobj : %.c
 	$(TARGET_CC) $(SPECS) $(LNKSCRIPT) \
-		$(TARGET_CFLAGS) $(TARGET_LIB) $(TARGET_INC) -o $@ $<
+		$(TARGET_CFLAGS) $(TARGET_LDFLAGS) $(TARGET_LIB) $(TARGET_INC) -o $@ $<
 
 # Rule to clean
 .PHONY : clean

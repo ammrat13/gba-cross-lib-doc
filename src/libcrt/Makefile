@@ -20,7 +20,7 @@ INSTALL_INC_DIR := $(PREFIX)/include
 CC := $(PROGRAM_PREFIX)$(TARGET)gcc
 
 # Flags for compilation and linking
-CFLAGS := -v -O2
+CFLAGS := -ffunction-sections -fdata-sections -v -Os
 # Also an include since we require headers
 INC := -I$(PREFIX)/include
 
