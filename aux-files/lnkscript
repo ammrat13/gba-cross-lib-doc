@@ -30,7 +30,7 @@ SECTIONS {
 
 
     /* Write every other file's text section and variants of it */
-    .text : ALIGN(0x4) { EXCLUDE_FILE(*crt0.o) *(.text*) } >crom
+    .text : ALIGN(0x4) { *(.text*) } >crom
 
     /* Also include the "glue" code generated for interworking */
     .glue_7       : ALIGN(0x4) { *(.glue_7)       } >crom

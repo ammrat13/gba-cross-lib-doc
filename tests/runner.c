@@ -9,9 +9,6 @@
 // Runner header
 #include "runner.h"
 
-// Needed for logging
-#include "utils/silent_log.h"
-
 
 group_test_run_t *GROUP_TEST_RUNS[] = {
     run_bare,
