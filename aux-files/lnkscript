@@ -83,10 +83,10 @@ SECTIONS {
     } >iwram AT>crom
     /* Provide symbols for the location of `.iwram_data` */
     /* The loader will copy the data over to IWRAM */
-    __data_vma_stt = ADDR(.iwram_data);
-    __data_vma_end = ADDR(.iwram_data) + SIZEOF(.iwram_data);
-    __data_lma     = LOADADDR(.iwram_data);
-    __data_lma_end = LOADADDR(.iwram_data) + SIZEOF(.iwram_data);
+    __iwram_data_vma_stt = ADDR(.iwram_data);
+    __iwram_data_vma_end = ADDR(.iwram_data) + SIZEOF(.iwram_data);
+    __iwram_data_lma_stt = LOADADDR(.iwram_data);
+    __iwram_data_lma_end = LOADADDR(.iwram_data) + SIZEOF(.iwram_data);
 
     /* Zero out the `.bss` section in RAM */
     /* We also take the recommendation to put COMMON in .bss */
@@ -97,8 +97,8 @@ SECTIONS {
     } >iwram
     /* Provide symbols for the location of `.iwram_bss` */
     /* The loader will zero out this memory */
-    __bss_vma_stt = ADDR(.iwram_bss);
-    __bss_vma_end = ADDR(.iwram_bss) + SIZEOF(.iwram_bss);
+    __iwram_bss_vma_stt = ADDR(.iwram_bss);
+    __iwram_bss_vma_end = ADDR(.iwram_bss) + SIZEOF(.iwram_bss);
 
     /* Don't need to initialize the `.noinit` section, but goes in RAM */
     .iwram_noinit (NOLOAD) : ALIGN(0x4) {
@@ -113,7 +113,7 @@ SECTIONS {
     /* Provide symbols for the end of the used area of memory */
     /* Currently unused */
     __iwram_end = __iwram_noinit_vma_end;
-    __crom_end  = __data_lma_end;
+    __crom_end  = __iwram_data_lma_end;
 
 
     /* We don't care about these sections */

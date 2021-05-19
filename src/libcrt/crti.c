@@ -25,14 +25,13 @@ extern "C" {
 //  Thus, we decleare them as the type of the value they are pointing to, then
 //  take the `&` of them.
 
-// For copying over .data
-extern char __data_vma_stt;
-extern char __data_vma_end;
-extern char __data_lma;
-
-// For zeroing out .bss
-extern char __bss_vma_stt;
-extern char __bss_vma_end;
+// For copying over .iwram_data
+extern char __iwram_data_vma_stt;
+extern char __iwram_data_vma_end;
+extern char __iwram_data_lma_stt;
+// For zeroing out .iwram_bss
+extern char __iwram_bss_vma_stt;
+extern char __iwram_bss_vma_end;
 
 // For calling constructors
 extern void (*__init_arr_stt)(void);
@@ -42,21 +41,21 @@ extern void (*__init_arr_end)(void);
 __attribute__((target("thumb")))
 void _init(void) {
 
-    // Copy over the .data section using memcpy
+    // Copy over the .iwram_data section using memcpy
     // Do pointer arithmetic to get the size of the section
     memcpy(
-        &__data_vma_stt,
-        &__data_lma,
-        (size_t) (&__data_vma_end - &__data_vma_stt)
+        &__iwram_data_vma_stt,
+        &__iwram_data_lma_stt,
+        (size_t) (&__iwram_data_vma_end - &__iwram_data_vma_stt)
     );
 
-    // Zero out the .bss section
+    // Zero out the .iwram_bss section
     // This isn't strictly needed since the BIOS does it for us, but do it
     //  anyway, just in case
     memset(
-        &__bss_vma_stt,
+        &__iwram_bss_vma_stt,
         0,
-        (size_t) (&__bss_vma_end - &__bss_vma_stt)
+        (size_t) (&__iwram_bss_vma_end - &__iwram_bss_vma_stt)
     );
 
     // Call all the constructors
