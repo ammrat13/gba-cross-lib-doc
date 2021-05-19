@@ -30,6 +30,7 @@ HOST_INC := -I./
 # Flags for compilation and linking and the target
 TARGET_CFLAGS := -ffunction-sections -fdata-sections -v -Os -Wall -Werror
 TARGET_LDFLAGS := -v -Wl,-gc-sections
+TARGET_OBJCOPYFLAGS := -O binary --pad-to 0x0A000000
 TARGET_LIB := -L$(PREFIX)/lib
 TARGET_INC := -I$(PREFIX)/include
 
@@ -56,7 +57,7 @@ all : $(OBJFILES) $(GBAFILES)
 
 # Rule for target code
 %.thex : %.tobj
-	$(TARGET_OBJCOPY) -O binary $< $@
+	$(TARGET_OBJCOPY) $(TARGET_OBJCOPYFLAGS) $< $@
 %.tobj : %.c
 	$(TARGET_CC) $(SPECS) $(LNKSCRIPT) \
 		$(TARGET_CFLAGS) $(TARGET_LDFLAGS) $(TARGET_LIB) $(TARGET_INC) -o $@ $<
