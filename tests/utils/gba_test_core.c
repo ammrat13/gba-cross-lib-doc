@@ -41,7 +41,7 @@ gba_test_core_t *init_gba_test_core(const char *fname) {
 
     // Assert that the platform is correct
     enum mPlatform pl = ret->core->platform(ret->core);
-    if(pl != PLATFORM_GBA) {
+    if(pl != mPLATFORM_GBA) {
         deinit_gba_test_core(ret);
         return NULL;
     }
