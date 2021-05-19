@@ -14,6 +14,7 @@ MEMORY {
     ewram (rwx) : ORIGIN = 0x02000000, LENGTH =   0x40000
     iwram (rwx) : ORIGIN = 0x03000000, LENGTH =    0x8000
     crom  (rx)  : ORIGIN = 0x08000000, LENGTH = 0x2000000
+    sram  (rwx) : ORIGIN = 0x0E000000, LENGTH =   0x10000
 }
 
 
