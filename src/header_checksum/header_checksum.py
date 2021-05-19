@@ -1,14 +1,5 @@
 #!/usr/bin/env python
 
-# header_checksum.py
-# By: Ammar Ratnani
-#
-# Computes the header checksum of a GBA game. Takes in exactly four command 
-# line parameters - the game name, the game code, the maker code, and the 
-# version number. The maker code and version are expected to be numbers. The 
-# name, game code, and maker code are trucated to 12, 4, and 2 characters 
-# respectively. The version number is taken modulo 256 to fit it into one byte.
-
 from sys import argv
 from itertools import islice, chain, repeat
 

@@ -2,7 +2,7 @@
 # By: Ammar Ratnani
 #
 # This file will compile all the tests in this directory. It will produce a
-# statically linked binary that can be run on a base system.
+# dynamically linked executable to be run in the compiling environment.
 
 # Sensitive to these environment variables
 PREFIX ?= $(HOME)/gba-cross-lib-doc
@@ -10,12 +10,7 @@ HOST ?= x86_64-pc-linux-gnu-
 TARGET ?= arm-agb-eabi-
 #HOST_PROGRAM_PREFIX ?=
 #TARGET_PROGRAM_PREFIX ?=
-#CI ?=
 
-
-# Get the root directory of this makefile
-# See: https://stackoverflow.com/questions/18136918/how-to-get-current-relative-directory-of-your-makefile
-ROOT_DIR := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 
 # Get the locations for all the programs
 HOST_CC := $(HOST_PROGRAM_PREFIX)$(HOST)gcc
@@ -31,9 +26,10 @@ HOST_CFLAGS := -v -g -O2 -Wall -Werror
 HOST_CDEFS := -DM_CORE_GBA -DMGBA_STANDALONE -UCOLOR_16_BIT
 HOST_LDFLAGS := -v
 HOST_LDLIBS := -lcmocka -lmgba
-HOST_INC := -I$(ROOT_DIR)/
+HOST_INC := -I./
 # Flags for compilation and linking and the target
-TARGET_CFLAGS := -v -O2 -Wall -Werror
+TARGET_CFLAGS := -ffunction-sections -fdata-sections -v -Os -Wall -Werror
+TARGET_LDFLAGS := -v -Wl,-gc-sections
 TARGET_LIB := -L$(PREFIX)/lib
 TARGET_INC := -I$(PREFIX)/include
 
@@ -63,7 +59,7 @@ all : $(OBJFILES) $(GBAFILES)
 	$(TARGET_OBJCOPY) -O binary $< $@
 %.tobj : %.c
 	$(TARGET_CC) $(SPECS) $(LNKSCRIPT) \
-		$(TARGET_CFLAGS) $(TARGET_LIB) $(TARGET_INC) -o $@ $<
+		$(TARGET_CFLAGS) $(TARGET_LDFLAGS) $(TARGET_LIB) $(TARGET_INC) -o $@ $<
 
 # Rule to clean
 .PHONY : clean

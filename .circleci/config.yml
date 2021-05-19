@@ -36,7 +36,7 @@ commands:
           command: |
             docker build \
               --tag ammrat13/gba-toolchain:latest \
-              --file docker/gba-toolchain.Dockerfile \
+              --file docker/gba-toolchain/Dockerfile \
               .
 
   # Test the image
@@ -48,7 +48,7 @@ commands:
           command: |
             docker build \
               --tag ammrat13/gba-toolchain-tests:latest \
-              --file docker/gba-toolchain-tests.Dockerfile \
+              --file docker/gba-toolchain-tests/Dockerfile \
               --build-arg CI=true \
               .
       - run:
