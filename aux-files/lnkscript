@@ -100,19 +100,10 @@ SECTIONS {
     __iwram_bss_vma_stt = ADDR(.iwram_bss);
     __iwram_bss_vma_end = ADDR(.iwram_bss) + SIZEOF(.iwram_bss);
 
-    /* Don't need to initialize the `.noinit` section, but goes in RAM */
-    .iwram_noinit (NOLOAD) : ALIGN(0x4) {
-        *(*.noinit*)
-    } >iwram
-    /* Provide symbols for the location of `.iwram_noinit` */
-    /* Currently unused */
-    __iwram_noinit_vma_stt = ADDR(.iwram_noinit);
-    __iwram_noinit_vma_end = ADDR(.iwram_noinit) + SIZEOF(.iwram_noinit);
-
 
     /* Provide symbols for the end of the used area of memory */
     /* Currently unused */
-    __iwram_end = __iwram_noinit_vma_end;
+    __iwram_end = __iwram_bss_vma_end;
     __crom_end  = __iwram_data_lma_end;
 
 
