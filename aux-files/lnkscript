@@ -13,7 +13,7 @@ TARGET(elf32-littlearm)
 MEMORY {
     ewram (rwx) : ORIGIN = 0x02000000, LENGTH =   0x40000
     iwram (rwx) : ORIGIN = 0x03000000, LENGTH =    0x8000
-    crom  (rx)  : ORIGIN = 0x08000000, LENGTH = 0x6000000
+    crom  (rx)  : ORIGIN = 0x08000000, LENGTH = 0x2000000
 }
 
 
@@ -38,10 +38,14 @@ SECTIONS {
     .vfp11_veneer : ALIGN(0x4) { *(.vfp11_veneer) } >crom
 
 
+    /* Read-only data stays in the ROM */
+    .rodata : ALIGN(0x4) { *(.rodata*) } >crom
+
     /* Sections for constructors and destructors */
     /* These sections don't have anything referencing them, so we use KEEP to
         prevent them from being garbage collected by the linker */
     /* Also handle priority in the constructors and destructors */
+    /* Don't need to do . = ALIGN since all pointers are words */
     .init_array : ALIGN(0x4) {
         KEEP(*(SORT_BY_INIT_PRIORITY(.init_array.*)))
         KEEP(*(.init_array))
@@ -62,20 +66,20 @@ SECTIONS {
     __fini_arr_end = ADDR(.fini_array) + SIZEOF(.fini_array);
 
 
-    /* Read-only data stays in the ROM */
-    .rodata : ALIGN(0x4) { *(.rodata*) } >crom
-
-
     /* We will copy .data into IWRAM from the ROM */
-    .data : ALIGN(0x4){ *(.data*) } >iwram AT>crom
+    .data : ALIGN(0x4) { *(.data*) } >iwram AT>crom
 
     /* The .bss section is also in IWRAM, but we don't need to put it in the
         ROM image since it's initially zeroed out */
     /* We also take the recommendation to put COMMON in .bss */
-    .bss (NOLOAD) : ALIGN(0x4) { *(.bss*) *(COMMON) } >iwram
-
-    /* The .noinit section is just like .bss except it isn't zeroed */
-    .noinit (NOLOAD) : ALIGN(0x4) { *(.noinit*) } >iwram
+    /* Additionally, we put .noinit here */
+    .bss (NOLOAD) : ALIGN(0x4) {
+        *(.bss*)
+        . = ALIGN(0x4);
+        *(.noinit*)
+        . = ALIGN(0x4);
+        *(COMMON)
+    } >iwram
 
     /* Again, define symbols to pass to our loader */
     __data_vma_stt = ADDR(.data);
