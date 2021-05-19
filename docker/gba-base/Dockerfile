@@ -18,7 +18,7 @@ RUN \
     # Install build dependencies
     apk add --no-cache cmake git && \
     # Do the build
-    git clone --branch 0.8.4 --depth 1 https://github.com/mgba-emu/mgba.git && \
+    git clone --branch 0.9.1 --depth 1 https://github.com/mgba-emu/mgba.git && \
     cd mgba && mkdir build && cd build && \
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DDISTBUILD=ON -DLIBMGBA_ONLY=ON -DM_CORE_GB=OFF .. && \
     make && make install && \
