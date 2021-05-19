@@ -2,8 +2,8 @@
 
 This library provides the necessary memory functions for the compiler to work.
 Even though we compile with `-ffreestanding`, GCC is allowed to assume the
-existence of some basic functions. The same goes for Clang, though only GCC is
-supported right now.
+existence of some basic functions. A similar thing is true for Clang, though
+only GCC is supported right now.
 
 See [GCC's Manual § 2](http://gcc.gnu.org/onlinedocs/gcc/Standards.html):
 > Most of the compiler support routines used by GCC are present in libgcc, but

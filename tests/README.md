@@ -5,7 +5,7 @@ libraries. It relies on mGBA for emulation and cmocka for its testing framework.
 Output can be controlled with cmocka's environment variables - see their
 [API](https://api.cmocka.org/).
 
-Right now the suite is very simple. It just has one test that the toolchain can
+Right now the suite is very simple. It just has one test: that the toolchain can
 produce a game that can display something.
 
 

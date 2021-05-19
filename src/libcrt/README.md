@@ -8,14 +8,14 @@ routines used, and provides a header with all of them.
 
 The `crt0.s` file contains the code to be executed on startup. The code is
 placed in the `.text.bootstrap` section and should be loaded at the very start
-of the cartridge ROM. It will:
+of the cartridge ROM since it has the cartridge header. It will:
 * Switch to THUMB mode
 * Call `_init()`
 * Call `main()`
 * Spinlock if `main` ever terminates
 
-Note that `crt0.s` does not set the stack pointers. They are set by the GBA
-BIOS. As a result, it is not possible to reset the program simply by calling
+Note that `crt0.s` does not set any stack pointers. They are set by the GBA
+BIOS. As a result, it is not possible to reset a program simply by calling
 `_start()`.
 
 

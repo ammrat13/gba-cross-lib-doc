@@ -6,7 +6,7 @@ there is a GCC specs file and a linker script.
 
 ## Specs
 
-The specs provide sensible default options for cross compiling to the GBA. In
+The specs provides sensible default options for cross compiling to the GBA. In
 particular it:
 * Includes the headers, start files, and libraries required to cross compile
 * Compiles for the GBA's `-mcpu=arm7tdmi`
@@ -19,7 +19,7 @@ particular it:
 ## Linker Script
 
 The linker script allows GBA games to be linked and mapped to ROM. It will place
-`crt0.o`'s `.text.bootstrap` section first. Then, it will place all the other
+`crt0.o`'s `.text.bootstrap` section first. Then it will place all the other
 code sections, any interworking code, the initialization and finalization
 arrays, and any variables.
 
