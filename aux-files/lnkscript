@@ -2,7 +2,8 @@
     lnkscript
     By: Ammar Ratnani
 
-    A simple linker script for GBA games.
+    A simple linker script for GBA games. Everything is aligned to a four-byte
+    boundary since a word is four bytes.
 */
 
 ENTRY(_start)
@@ -20,33 +21,45 @@ MEMORY {
 
 SECTIONS {
 
-    /* Align everything to a four-byte boundary since a word is four bytes */
-
     /* Make sure crt0.o goes first since it has the cartridge header */
-    /* We put the bootstrapping code in a separate section only for
-        organization - this can be put in another section as long as its at
-        the start of the cartridge ROM */
-    .text.bootstrap : ALIGN(0x4) { KEEP( *crt0.o(.text.bootstrap) ) } >crom
+    /* It's placed in `.text.bootstrap` instead of `.text` for organization */
+    /* This section doesn't have any references, so `KEEP` it */
+    .text.bootstrap : ALIGN(0x4) {
+        KEEP( *crt0.o(.text.bootstrap) )
+    } >crom
+    /* Provide symbols for the location of `.text.bootstrap` */
+    /* Currently unused */
+    __text_bootstrap_stt = ADDR(.text.bootstrap);
+    __text_bootstrap_end = ADDR(.text.bootstrap) + SIZEOF(.text.bootstrap);
 
 
-    /* Write every other file's text section and variants of it */
-    .text : ALIGN(0x4) { *(.text*) } >crom
-
+    /* Write every other file's text section */
+    /* Do `.text*` for `-ffunction-sections` */
     /* Also include the "glue" code generated for interworking */
-    .glue_7       : ALIGN(0x4) { *(.glue_7)       } >crom
-    .glue_7t      : ALIGN(0x4) { *(.glue_7t)      } >crom
-    .v4_bx        : ALIGN(0x4) { *(.v4_bx)        } >crom
-    .vfp11_veneer : ALIGN(0x4) { *(.vfp11_veneer) } >crom
+    .text : ALIGN(0x4) {
+        *(.text*)
+        *(.glue_7)
+        *(.glue_7t)
+        *(.v4_bx)
+        *(.vfp11_veneer)
+    } >crom
+    /* Provide symbols for the location of `.text` */
+    /* Currently unused */
+    __text_stt = ADDR(.text);
+    __text_end = ADDR(.text) + SIZEOF(.text);
 
 
     /* Read-only data stays in the ROM */
-    .rodata : ALIGN(0x4) { *(.rodata*) } >crom
+    .rodata : ALIGN(0x4) {
+        *(.rodata*)
+    } >crom
+    /* Provide symbols for the location of `.rodata` */
+    /* Currently unused */
+    __rodata_stt = ADDR(.rodata);
+    __rodata_end = ADDR(.rodata) + SIZEOF(.rodata);
 
-    /* Sections for constructors and destructors */
-    /* These sections don't have anything referencing them, so we use KEEP to
-        prevent them from being garbage collected by the linker */
-    /* Also handle priority in the constructors and destructors */
-    /* Don't need to do . = ALIGN since all pointers are words */
+    /* Sections for constructors and destructors with priority */
+    /* These sections don't have anything referencing them, so `KEEP` them */
     .init_array : ALIGN(0x4) {
         KEEP(*(SORT_BY_INIT_PRIORITY(.init_array.*)))
         KEEP(*(.init_array))
@@ -55,39 +68,52 @@ SECTIONS {
         KEEP(*(SORT_BY_INIT_PRIORITY(.fini_array.*)))
         KEEP(*(.fini_array))
     } >crom
-
-    /* Pass data about .init_array and .fini_array to our loader so it can call
-        all the constructors and destructors */
-    /* We use start and end instead of length because that's easier for C's
-        typing to handle with the weird ways these symbols work */
-    /* Note that the end is just past the last element of the array */
+    /* Provide symbols for the location of `.init_array` and `.fini_array` */
+    /* Used by the loader so it can call all the constructors and destructors */
     __init_arr_stt = ADDR(.init_array);
     __init_arr_end = ADDR(.init_array) + SIZEOF(.init_array);
     __fini_arr_stt = ADDR(.fini_array);
     __fini_arr_end = ADDR(.fini_array) + SIZEOF(.fini_array);
 
 
-    /* We will copy .data into IWRAM from the ROM */
-    .data : ALIGN(0x4) { *(.data*) } >iwram AT>crom
+    /* We need to copy the `.data` section over to RAM */
+    /* By default it goes in IWRAM */
+    .iwram_data : ALIGN(0x4) {
+        *(.data*)
+    } >iwram AT>crom
+    /* Provide symbols for the location of `.iwram_data` */
+    /* The loader will copy the data over to IWRAM */
+    __data_vma_stt = ADDR(.iwram_data);
+    __data_vma_end = ADDR(.iwram_data) + SIZEOF(.iwram_data);
+    __data_lma     = LOADADDR(.iwram_data);
+    __data_lma_end = LOADADDR(.iwram_data) + SIZEOF(.iwram_data);
 
-    /* The .bss section is also in IWRAM, but we don't need to put it in the
-        ROM image since it's initially zeroed out */
+    /* Zero out the `.bss` section in RAM */
     /* We also take the recommendation to put COMMON in .bss */
-    /* Additionally, we put .noinit here */
-    .bss (NOLOAD) : ALIGN(0x4) {
+    .iwram_bss (NOLOAD) : ALIGN(0x4) {
         *(.bss*)
-        . = ALIGN(0x4);
-        *(.noinit*)
         . = ALIGN(0x4);
         *(COMMON)
     } >iwram
+    /* Provide symbols for the location of `.iwram_bss` */
+    /* The loader will zero out this memory */
+    __bss_vma_stt = ADDR(.iwram_bss);
+    __bss_vma_end = ADDR(.iwram_bss) + SIZEOF(.iwram_bss);
 
-    /* Again, define symbols to pass to our loader */
-    __data_vma_stt = ADDR(.data);
-    __data_vma_end = ADDR(.data) + SIZEOF(.data);
-    __data_lma     = LOADADDR(.data);
-    __bss_vma_stt = ADDR(.bss);
-    __bss_vma_end = ADDR(.bss) + SIZEOF(.bss);
+    /* Don't need to initialize the `.noinit` section, but goes in RAM */
+    .iwram_noinit (NOLOAD) : ALIGN(0x4) {
+        *(*.noinit*)
+    } >iwram
+    /* Provide symbols for the location of `.iwram_noinit` */
+    /* Currently unused */
+    __iwram_noinit_vma_stt = ADDR(.iwram_noinit);
+    __iwram_noinit_vma_end = ADDR(.iwram_noinit) + SIZEOF(.iwram_noinit);
+
+
+    /* Provide symbols for the end of the used area of memory */
+    /* Currently unused */
+    __iwram_end = __iwram_noinit_vma_end;
+    __crom_end  = __data_lma_end;
 
 
     /* We don't care about these sections */

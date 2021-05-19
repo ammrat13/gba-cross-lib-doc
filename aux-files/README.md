@@ -23,18 +23,28 @@ The linker script allows GBA games to be linked and mapped to ROM. It will place
 code sections, any interworking code, the initialization and finalization
 arrays, and any variables.
 
-It also provides some symbols for the program loader. For `.data`:
-* `__data_vma_stt`: The desired starting address of the section in *RAM*
-* `__data_vma_end`: The desired address just past the end of the section in
-  *RAM*
-* `__data_lma`: The address of the `.data` section in *ROM*
-
-For `.bss`:
-* `__bss_vma_stt`: Its desired starting address in *RAM*
-* `__bss_vma_end`: Its desired address just past the end in *RAM*
-
-For `.init_array` and `.fini_array`:
-* `__init_arr_stt`: The address of the first element
-* `__init_arr_end`: The address just past the end
-* `__fini_arr_stt`: The address of the first element
-* `__fini_arr_end`: The address just past the end
+It also provides some symbols for the program loader. The `_stt` symbols mark
+the first address in a section, while the `_end` symbols mark the address *just
+past* the end of a section - computed as `start + size`. The script also gives
+symbols for the end of all the sections of memory. A full list of symbols
+defined is:
+* `__text_bootstrap_stt`
+* `__text_bootstrap_end`
+* `__text_stt`
+* `__text_end`
+* `__rodata_stt`
+* `__rodata_end`
+* `__init_arr_stt`
+* `__init_arr_end`
+* `__fini_arr_stt`
+* `__fini_arr_end`
+* `__data_vma_stt`
+* `__data_vma_end`
+* `__data_lma`
+* `__data_lma_end`
+* `__bss_vma_stt`
+* `__bss_vma_end`
+* `__iwram_noinit_vma_stt`
+* `__iwram_noinit_vma_end`
+* `__iwram_end`
+* `__crom_end`
