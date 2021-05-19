@@ -80,6 +80,8 @@ SECTIONS {
     /* By default it goes in IWRAM */
     .iwram_data : ALIGN(0x4) {
         *(.data*)
+        . = ALIGN(0x4);
+        *(.iwram_data*)
     } >iwram AT>crom
     /* Provide symbols for the location of `.iwram_data` */
     /* The loader will copy the data over to IWRAM */
@@ -91,9 +93,11 @@ SECTIONS {
     /* Zero out the `.bss` section in RAM */
     /* We also take the recommendation to put COMMON in .bss */
     .iwram_bss (NOLOAD) : ALIGN(0x4) {
+        *(COMMON)
+        . = ALIGN(0x4);
         *(.bss*)
         . = ALIGN(0x4);
-        *(COMMON)
+        *(.iwram_bss*)
     } >iwram
     /* Provide symbols for the location of `.iwram_bss` */
     /* The loader will zero out this memory */
@@ -101,10 +105,29 @@ SECTIONS {
     __iwram_bss_vma_end = ADDR(.iwram_bss) + SIZEOF(.iwram_bss);
 
 
+    /* Do the exact same thing as above for `.ewram_data` */
+    /* We provide this section so users can override the defaults */
+    .ewram_data : ALIGN(0x4) {
+        *(.ewram_data*)
+    } >ewram AT>crom
+    __ewram_data_vma_stt = ADDR(.ewram_data);
+    __ewram_data_vma_end = ADDR(.ewram_data) + SIZEOF(.ewram_data);
+    __ewram_data_lma_stt = LOADADDR(.ewram_data);
+    __ewram_data_lma_end = LOADADDR(.ewram_data) + SIZEOF(.ewram_data);
+
+    /* Do the same thing for `.ewram_bss` */
+    .ewram_bss (NOLOAD) : ALIGN(0x4) {
+        *(.ewram_bss*)
+    } >ewram
+    __ewram_bss_vma_stt = ADDR(.ewram_bss);
+    __ewram_bss_vma_end = ADDR(.ewram_bss) + SIZEOF(.ewram_bss);
+
+
     /* Provide symbols for the end of the used area of memory */
     /* Currently unused */
     __iwram_end = __iwram_bss_vma_end;
-    __crom_end  = __iwram_data_lma_end;
+    __ewram_end = __ewram_bss_vma_end;
+    __crom_end  = __ewram_data_lma_end;
 
 
     /* We don't care about these sections */

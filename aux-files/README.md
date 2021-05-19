@@ -44,5 +44,11 @@ defined is:
 * `__iwram_data_lma_end`
 * `__iwram_bss_vma_stt`
 * `__iwram_bss_vma_end`
+* `__ewram_data_vma_stt`
+* `__ewram_data_vma_end`
+* `__ewram_data_lma_stt`
+* `__ewram_data_lma_end`
+* `__ewram_bss_vma_stt`
+* `__ewram_bss_vma_end`
 * `__iwram_end`
 * `__crom_end`

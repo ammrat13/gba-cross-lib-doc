@@ -33,6 +33,14 @@ extern char __iwram_data_lma_stt;
 extern char __iwram_bss_vma_stt;
 extern char __iwram_bss_vma_end;
 
+// Same for .ewram_data
+extern char __ewram_data_vma_stt;
+extern char __ewram_data_vma_end;
+extern char __ewram_data_lma_stt;
+// Same for .ewram_bss
+extern char __ewram_bss_vma_stt;
+extern char __ewram_bss_vma_end;
+
 // For calling constructors
 extern void (*__init_arr_stt)(void);
 extern void (*__init_arr_end)(void);
@@ -48,6 +56,12 @@ void _init(void) {
         &__iwram_data_lma_stt,
         (size_t) (&__iwram_data_vma_end - &__iwram_data_vma_stt)
     );
+    // Do the same for .ewram_data
+    memcpy(
+        &__ewram_data_vma_stt,
+        &__ewram_data_lma_stt,
+        (size_t) (&__ewram_data_vma_end - &__ewram_data_vma_stt)
+    );
 
     // Zero out the .iwram_bss section
     // This isn't strictly needed since the BIOS does it for us, but do it
@@ -56,6 +70,12 @@ void _init(void) {
         &__iwram_bss_vma_stt,
         0,
         (size_t) (&__iwram_bss_vma_end - &__iwram_bss_vma_stt)
+    );
+    // Do the same for .ewram_bss
+    memset(
+        &__ewram_bss_vma_stt,
+        0,
+        (size_t) (&__ewram_bss_vma_end - &__ewram_bss_vma_stt)
     );
 
     // Call all the constructors
