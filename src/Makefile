@@ -1,16 +1,16 @@
 # Makefile for All the Libraries
 # By: Ammar Ratnani
 #
-# This file is provided for convinience purposes. It will essentiall run a
-# specified target on `libmem` and `libcrt`. It will do `libmem` first due to
-# dependencies.
+# This file is provided for convinience purposes. It will essentially run a
+# specified target on all the subdirectories. It will handle dependencies as
+# well.
 #
 # See: https://stackoverflow.com/questions/17834582/run-make-in-each-subdirectory/17845120
 
 # Targets we support
 TARGETS := all install clean
 # Directories we will use
-DIRECTORIES := libmem libcrt
+DIRECTORIES := libplacement libmem libcrt
 
 # Mark the targets as phony
 .PHONY: $(TARGETS) $(DIRECTORIES)

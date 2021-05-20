@@ -6,18 +6,21 @@
     declare variables then assert they were placed in the right place.
 */
 
+// Test our library for this
+#include <placement.h>
+
 
 // IWRAM Implicit
 int a = 0x55667788;
 int b;
 
 // IWRAM Explicit
-__attribute__((section(".iwram_data.c"))) int c = 0x55667788;
-__attribute__((section(".iwram_bss.d")))  int d;
+int IWRAM_DATA(c) = 0x55667788;
+int IWRAM_BSS(d);
 
 // EWRAM
-__attribute__((section(".ewram_data.e"))) int e = 0x11223344;
-__attribute__((section(".ewram_bss.f")))  int f;
+int EWRAM_DATA(e) = 0x11223344;
+int EWRAM_BSS(f);
 
 
 // Main not required
