@@ -36,9 +36,9 @@ TARGET_INC := -I$(PREFIX)/include
 
 # Files to build
 OBJFILES := runner.hobj utils/silent_log.hobj utils/gba_test_core.hobj \
-	tests/bare_test.hobj
+	tests/bare/test.hobj
 GBAFILES := \
-	tests/bare_game.thex
+	tests/bare/game.thex
 # The name of out output executable
 OUTFILE := tests.out
 

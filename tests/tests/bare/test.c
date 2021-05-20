@@ -14,7 +14,7 @@
 
 // Setup the core
 static int setup_test_display(void **state) {
-    *state = init_gba_test_core("tests/bare_game.thex");
+    *state = init_gba_test_core("tests/bare/game.thex");
     return *state == NULL;
 }
 
