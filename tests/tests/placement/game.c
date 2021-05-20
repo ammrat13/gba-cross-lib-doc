@@ -15,12 +15,12 @@ int a = 0x55667788;
 int b;
 
 // IWRAM Explicit
-int IWRAM_DATA(c) = 0x55667788;
-int IWRAM_BSS(d);
+int IDATA(c) = 0x55667788;
+int IBSS(d);
 
 // EWRAM
-int EWRAM_DATA(e) = 0x11223344;
-int EWRAM_BSS(f);
+int EDATA(e) = 0x11223344;
+int EBSS(f);
 
 
 // Main not required

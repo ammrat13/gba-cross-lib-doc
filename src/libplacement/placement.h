@@ -10,11 +10,11 @@
 #define PLACEMENT_H
 
 
-#define IWRAM_DATA(var) var __attribute__((section(".iwram_data." #var)))
-#define IWRAM_BSS(var)  var __attribute__((section(".iwram_bss."  #var)))
+#define IDATA(var) var __attribute__((section(".iwram_data." #var)))
+#define IBSS(var)  var __attribute__((section(".iwram_bss."  #var)))
 
-#define EWRAM_DATA(var) var __attribute__((section(".ewram_data." #var)))
-#define EWRAM_BSS(var)  var __attribute__((section(".ewram_bss."  #var)))
+#define EDATA(var) var __attribute__((section(".ewram_data." #var)))
+#define EBSS(var)  var __attribute__((section(".ewram_bss."  #var)))
 
 
 #endif // ndef PLACEMENT_H
