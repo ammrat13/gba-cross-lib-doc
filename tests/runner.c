@@ -12,6 +12,7 @@
 
 group_test_run_t *GROUP_TEST_RUNS[] = {
     run_bare,
+    run_placement,
     NULL,
 };
 
