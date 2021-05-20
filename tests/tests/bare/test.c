@@ -1,8 +1,8 @@
 /**
-    bare_test.c
+    bare/test.c
     By: Ammar Ratnani
 
-    Check that `game_bare.c` gives the right output to the screen. Should be
+    Check that `bare/game.c` gives the right output to the screen. Should be
     mostly black save for three pixels that are red, green, and blue.
 
     For this file, the `state` is a `gba_test_core_t**`
