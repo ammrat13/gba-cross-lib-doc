@@ -41,5 +41,5 @@ Note that the target code is compiled and linked in one step. Thus, the C files
 with GBA code must be self-contained, except for existing libraries.
 
 To add a test, create the host and target C files, add them to the `Makefile`,
-then register the host code with `runner.c` by adding the function to run all
-the tests to `GROUP_TEST_RUNS`.
+then register the host code with `runner.c` by adding `CMUnitTest` to the
+*local* `TEST_CASES` variable.

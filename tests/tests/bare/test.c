@@ -65,13 +65,9 @@ static void test_display(void **state) {
 
 
 // The suite to run
-static const struct CMUnitTest suite[] = {
+const struct CMUnitTest cmtest_bare =
     cmocka_unit_test_setup_teardown(
         test_display,
         setup_test_display,
-        teardown_test_display),
-};
-// Run the tests
-int run_bare(void) {
-    return cmocka_run_group_tests_name("bare", suite, NULL, NULL);
-}
+        teardown_test_display
+    );

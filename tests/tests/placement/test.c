@@ -93,13 +93,9 @@ static void test_memory_placement(void **state) {
 
 
 // The suite to run
-static const struct CMUnitTest suite[] = {
+const struct CMUnitTest cmtest_memory_placement =
     cmocka_unit_test_setup_teardown(
         test_memory_placement,
         setup_test_memory_placement,
-        teardown_test_memory_placement),
-};
-// Run the tests
-int run_placement(void) {
-    return cmocka_run_group_tests_name("placement", suite, NULL, NULL);
-}
+        teardown_test_memory_placement
+    );
