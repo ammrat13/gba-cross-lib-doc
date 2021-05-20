@@ -57,7 +57,7 @@ static void test_memory_placement(void **state) {
     // Check that EWRAM has the right contents
     const size_t ewram_ex_len = 8;
     const uint8_t ewram_ex_start[] = {
-        0x43, 0x33, 0x22, 0x11,
+        0x44, 0x33, 0x22, 0x11,
         0x00, 0x00, 0x00, 0x00,
     };
     for(size_t i = 0; i < ewram_ex_len; i++) {
