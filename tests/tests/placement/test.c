@@ -1,4 +1,4 @@
-/*
+/**
     placement/test.c
     By: Ammar Ratnani
 
@@ -51,14 +51,14 @@ static void test_memory_placement(void **state) {
 
     // Let the program run to completion
     // Shouldn't take very long
-    tc->core->runFrame(tc->core);
+    for(uint8_t i = 0; i < 15; i++)
+        tc->core->runFrame(tc->core);
 
     // Check that EWRAM has the right contents
-    const size_t ewram_ex_len = 12;
+    const size_t ewram_ex_len = 8;
     const uint8_t ewram_ex_start[] = {
         0x44, 0x33, 0x22, 0x11,
-        0x44, 0x33, 0x22, 0x11,
-        0x00, 0x00, 0x00, 0x00
+        0x00, 0x00, 0x00, 0x00,
     };
     for(size_t i = 0; i < ewram_ex_len; i++) {
         uint8_t expected = ewram_ex_start[i];
@@ -66,16 +66,18 @@ static void test_memory_placement(void **state) {
         if(expected != actual) {
             fail_msg(
                 "Expected character 0x%02x instead of 0x%02x\n"
-                "At memory address %zu",
+                "At memory address 0x%zx",
                 expected, actual, ewram_base + i);
         }
     }
 
     // Same for IWRAM
-    const size_t iwram_ex_len = 8;
+    const size_t iwram_ex_len = 16;
     const uint8_t iwram_ex_start[] = {
         0x88, 0x77, 0x66, 0x55,
-        0x00, 0x00, 0x00, 0x00
+        0x88, 0x77, 0x66, 0x55,
+        0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00,
     };
     for(size_t i = 0; i < iwram_ex_len; i++) {
         uint8_t expected = iwram_ex_start[i];
@@ -83,7 +85,7 @@ static void test_memory_placement(void **state) {
         if(expected != actual) {
             fail_msg(
                 "Expected character 0x%02x instead of 0x%02x\n"
-                "At memory address %zu",
+                "At memory address %zx",
                 expected, actual, iwram_base + i);
         }
     }

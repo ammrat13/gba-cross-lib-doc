@@ -29,7 +29,7 @@ HOST_LDLIBS := -lcmocka -lmgba
 HOST_INC := -I./
 # Flags for compilation and linking and the target
 TARGET_CFLAGS := -ffunction-sections -fdata-sections -v -Os -Wall -Werror
-TARGET_LDFLAGS := -v -Wl,-gc-sections
+TARGET_LDFLAGS := -v
 TARGET_OBJCOPYFLAGS := -O binary --pad-to 0x0A000000
 TARGET_LIB := -L$(PREFIX)/lib
 TARGET_INC := -I$(PREFIX)/include
