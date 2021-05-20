@@ -10,10 +10,8 @@
 #define PLACEMENT_H
 
 
-// Utility macros for string manipulation
-// See: https://stackoverflow.com/questions/5459868/concatenate-int-to-string-using-c-preprocessor/5459929
-#define STR_HELPER(x) #x
-#define STR(x) STR_HELPER(x)
+// Needed for string utility functions in macros
+#include <util/str_macro.h>
 
 
 // The identifier we use for the sections

@@ -10,7 +10,7 @@
 # Targets we support
 TARGETS := all install clean
 # Directories we will use
-DIRECTORIES := libplacement libmem libcrt
+DIRECTORIES := libstrmacro libplacement libmem libcrt
 
 # Mark the targets as phony
 .PHONY: $(TARGETS) $(DIRECTORIES)
@@ -21,5 +21,5 @@ $(TARGETS): $(DIRECTORIES)
 $(DIRECTORIES):
 	$(MAKE) -C $@ $(MAKECMDGOALS)
 
-# Special ordering for dependencies
+# Special ordering for compile-time dependencies
 libcrt: libmem
