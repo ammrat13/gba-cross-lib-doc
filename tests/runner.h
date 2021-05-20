@@ -3,8 +3,8 @@
     By: Ammar Ratnani
 
     A header file for the main test runner. It has forward declarations for all
-    the group test functions to call for unit testing, as well as a declaration
-    for a null-terminated array of all of them. This header includes `lib.h`.
+    the `CMUnitTest`s to run. Note that these tests must be added to the *local*
+    variable `TEST_CASES` in `runner.c`. This header includes `lib.h`.
 */
 
 #ifndef RUNNER_H
@@ -19,16 +19,9 @@ extern "C" {
 #include "lib.h"
 
 
-// Functions that run `cmocka_run_group_tests`
-// Should return the result of that call - the number of failed tests
-typedef int group_test_run_t(void);
-
-// Forward declarations of all the group test functions
-extern group_test_run_t run_bare;
-
-// A null-terminated list of all those functions
-// Defined in `runner.c`
-extern group_test_run_t *GROUP_TEST_RUNS[];
+// Forward declarations of all the unit tests to run
+extern const struct CMUnitTest cmtest_bare;
+extern const struct CMUnitTest cmtest_memory_placement;
 
 
 #ifdef __cplusplus

@@ -1,8 +1,8 @@
 /**
-    bare_test.c
+    bare/test.c
     By: Ammar Ratnani
 
-    Check that `game_bare.c` gives the right output to the screen. Should be
+    Check that `bare/game.c` gives the right output to the screen. Should be
     mostly black save for three pixels that are red, green, and blue.
 
     For this file, the `state` is a `gba_test_core_t**`
@@ -14,7 +14,7 @@
 
 // Setup the core
 static int setup_test_display(void **state) {
-    *state = init_gba_test_core("tests/bare_game.thex");
+    *state = init_gba_test_core("tests/bare/game.thex");
     return *state == NULL;
 }
 
@@ -65,13 +65,9 @@ static void test_display(void **state) {
 
 
 // The suite to run
-static const struct CMUnitTest suite[] = {
+const struct CMUnitTest cmtest_bare =
     cmocka_unit_test_setup_teardown(
         test_display,
         setup_test_display,
-        teardown_test_display),
-};
-// Run the tests
-int run_bare(void) {
-    return cmocka_run_group_tests_name("bare", suite, NULL, NULL);
-}
+        teardown_test_display
+    );

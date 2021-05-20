@@ -2,18 +2,12 @@
     runner.c
     By: Ammar Ratnani
 
-    Implementation file for running the tests. It simply loops over
-    `GROUP_TEST_RUNS` and runs all the groups.
+    Implementation file for running the tests. It will simply create a group
+    test from all the `TEST_CASES` and run it.
 */
 
 // Runner header
 #include "runner.h"
-
-
-group_test_run_t *GROUP_TEST_RUNS[] = {
-    run_bare,
-    NULL,
-};
 
 
 int main(void) {
@@ -21,17 +15,11 @@ int main(void) {
     // Disable mGBA logging to STDOUT
     mLogSetDefaultLogger(&silent_logger);
 
-    // Keep track of how many failures we've had
-    int failures = 0;
-
-    // Loop over all the group test functions
-    // Remember that the array is terminated by a null, and will therefore
-    //  always have at least one element.
-    for(group_test_run_t **gtr = GROUP_TEST_RUNS; *gtr != NULL; gtr++) {
-        // Track the failures
-        failures += (*gtr)();
-    }
-
-    // Return the number of failures
-    return failures;
+    // Run the tests
+    // Need to declare it inside main because can't initialize outside
+    const struct CMUnitTest TEST_CASES[] = {
+        cmtest_bare,
+        cmtest_memory_placement,
+    };
+    return cmocka_run_group_tests(TEST_CASES, NULL, NULL);
 }

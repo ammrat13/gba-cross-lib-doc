@@ -29,15 +29,18 @@ HOST_LDLIBS := -lcmocka -lmgba
 HOST_INC := -I./
 # Flags for compilation and linking and the target
 TARGET_CFLAGS := -ffunction-sections -fdata-sections -v -Os -Wall -Werror
-TARGET_LDFLAGS := -v -Wl,-gc-sections
+TARGET_LDFLAGS := -v
+TARGET_OBJCOPYFLAGS := -O binary --pad-to 0x0A000000
 TARGET_LIB := -L$(PREFIX)/lib
 TARGET_INC := -I$(PREFIX)/include
 
 # Files to build
 OBJFILES := runner.hobj utils/silent_log.hobj utils/gba_test_core.hobj \
-	tests/bare_test.hobj
+	tests/bare/test.hobj \
+	tests/placement/test.hobj
 GBAFILES := \
-	tests/bare_game.thex
+	tests/bare/game.thex \
+	tests/placement/game.thex
 # The name of out output executable
 OUTFILE := tests.out
 
@@ -56,7 +59,7 @@ all : $(OBJFILES) $(GBAFILES)
 
 # Rule for target code
 %.thex : %.tobj
-	$(TARGET_OBJCOPY) -O binary $< $@
+	$(TARGET_OBJCOPY) $(TARGET_OBJCOPYFLAGS) $< $@
 %.tobj : %.c
 	$(TARGET_CC) $(SPECS) $(LNKSCRIPT) \
 		$(TARGET_CFLAGS) $(TARGET_LDFLAGS) $(TARGET_LIB) $(TARGET_INC) -o $@ $<

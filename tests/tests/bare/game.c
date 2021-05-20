@@ -1,5 +1,5 @@
 /**
-    bare_game.c
+    bare/game.c
     By: Ammar Ratnani
 
     This file just displays three pixels on the screen. The test is whether this
